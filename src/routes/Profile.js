@@ -1,7 +1,9 @@
 import Nweet from "components/Nweet";
 import { authService, dbService } from "fbase";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+//import { useHistory } from "react-router";
+import { withRouter, useHistory } from 'react-router-dom';
+
 
 const Profile = ({userObj, refreshUser}) => {
     const [nweets, setNweets] = useState([]);
@@ -45,10 +47,10 @@ const Profile = ({userObj, refreshUser}) => {
 
     return (
         <>
-        <form onSubmit={onSubmit}>
-            <input type="text" value={name} placeholder="what's your name?" onChange={onChange} />
-            <input type="submit" value="이름변경"  />
-        </form>
+            <form onSubmit={onSubmit}>
+                <input type="text" value={name} placeholder="what's your name?" onChange={onChange} />
+                <input type="submit" value="이름변경"  />
+            </form>
             <button onClick={onLogoutClick}>Log Out</button>
             
             <div>
@@ -62,4 +64,4 @@ const Profile = ({userObj, refreshUser}) => {
     )
 }
 
-export default Profile;
+export default withRouter(Profile);
