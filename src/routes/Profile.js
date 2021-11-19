@@ -46,13 +46,16 @@ const Profile = ({userObj, refreshUser}) => {
     }, );
 
     return (
-        <>
-            <form onSubmit={onSubmit}>
-                <input type="text" value={name} placeholder="what's your name?" onChange={onChange} />
-                <input type="submit" value="이름변경"  />
+        <div className="container">
+            <form onSubmit={onSubmit} className="profileForm">
+                <input type="text" value={name} placeholder="what's your name?" 
+                onChange={onChange} autoFocus className="formInput" />
+                <input type="submit" value="이름변경" className="formBtn" 
+                style={{marginTop: 10,}} />
             </form>
-            <button onClick={onLogoutClick}>Log Out</button>
-            
+            <span className="formBtn cancelBtn logOut" onClick="onLogoutClick">
+                Log Out
+            </span>
             <div>
                 {nweets.map((nweet) => (
                     <Nweet key={nweet.id} nweetObj={nweet}
@@ -60,7 +63,7 @@ const Profile = ({userObj, refreshUser}) => {
                 )
                 )}
             </div>
-        </>
+        </div>
     )
 }
 
