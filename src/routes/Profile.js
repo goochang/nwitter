@@ -53,7 +53,7 @@ const Profile = ({userObj, refreshUser}) => {
                 <input type="submit" value="이름변경" className="formBtn" 
                 style={{marginTop: 10,}} />
             </form>
-            <span className="formBtn cancelBtn logOut" onClick="onLogoutClick">
+            <span className="formBtn cancelBtn logOut" onClick={onLogoutClick}>
                 Log Out
             </span>
             <div>
