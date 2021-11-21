@@ -8,31 +8,9 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
 
-    const getCreator = async () => {
-        var admin = require("firebase-admin");
-        var serviceAccount = require("../nwitter-58cb4-firebase-adminsdk-61rss-88d51acb43.json");
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-        });
-        
-        admin
-        .auth()
-        .getUser(newNweet.creatorId)
-        .then((userRecord) => {
-        // See the UserRecord reference doc for the contents of userRecord.
-        console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-        })
-        .catch((error) => {
-        console.log('Error fetching user data:', error);
-        });
-    }
-
-    
-
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
 
-        getCreator()
         if(ok) {
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
 
