@@ -32,6 +32,7 @@ const NweetFactory = ({userObj}) => {
             text:_nweet,
             createdAt: Date.now(),
             creatorId: userObj.uid,
+            creator: userObj.nickname,
             attachmentUrl,
         });
     }

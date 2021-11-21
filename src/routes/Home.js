@@ -19,8 +19,6 @@ function Home({userObj}) {
       })
     }, []);
 
-
-    console.log(nweets)
   return (
     <div className="container">
       <NweetFactory userObj={userObj}  />
