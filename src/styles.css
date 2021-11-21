@@ -2,7 +2,7 @@
 
 * {
   box-sizing: border-box;
-  font-size: 20px !important;
+  font-size: 20px;
 }
 
 .main {
@@ -18,6 +18,8 @@
   align-items: flex-end;
   position: relative;
   flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-box-align: end;
 }
 .header_main {
   display: flex;
@@ -43,7 +45,7 @@ header nav a div {
 
 main {
   display: flex;
-  flex-grow: 2;
+  flex-grow: 3;
 }
 
 input {
@@ -81,15 +83,16 @@ form {
 
 .container {
   width: 100%;
-  max-width: 320px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
+  border: 1px solid gray;
 }
 
 .formInput {
   width: 100%;
   padding: 10px 20px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   border: 1px solid black;
   text-align: center;
   background-color: white;
@@ -102,7 +105,7 @@ form {
   padding: 7px 20px;
   text-align: center;
   color: white;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   background-color: #04aaff;
   cursor: pointer;
 }
@@ -133,6 +136,7 @@ form {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  border-bottom: 1px solid gray;
 }
 
 .factoryInput__container {
@@ -150,19 +154,25 @@ form {
   height: 40px;
   padding: 0px 20px;
   color: white;
-  border: 1px solid #04aaff;
-  border-radius: 20px;
+  /* border: 1px solid #04aaff; */
+  /* border-radius: 20px; */
   font-weight: 500;
   font-size: 12px;
+}
+
+div.tweet_submit {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0 16px;
 }
 
 .factoryInput__arrow {
   position: absolute;
   right: 0;
+  bottom: 0;
   background-color: #04aaff;
-  height: 40px;
-  width: 40px;
-  padding: 10px 0px;
+  font-size: 15px;
+  padding: 10px;
   text-align: center;
   border-radius: 20px;
   color: white;
@@ -211,15 +221,29 @@ form {
 
 .nweet {
   margin-bottom: 20px;
-  background-color: white;
   width: 100%;
-  max-width: 320px;
-  padding: 20px;
-  border-radius: 10px;
+  max-width: 600px;
+  padding: 20px 20px 50px 79px;
   position: relative;
   display: flex;
   flex-direction: column;
-  color: rgba(0, 0, 0, 0.8);
+  color:white;
+  border-top: 1px solid gray;
+}
+
+.nweet .profile_container {
+  
+}
+
+.nweet .profile_container img {
+  left: 0px;
+  top: 0px;
+  border-radius: 50%;
+  position: absolute;
+  width:50px;
+  height: 50px;
+  margin-left: 15px;
+  margin-top: 25px;
 }
 
 .nweet h4 {
@@ -227,12 +251,13 @@ form {
 }
 
 .nweet img {
-  right: -10px;
-  top: 20px;
-  position: absolute;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  /* left: 0px;
+  top: 0px; */
+  position: relative;
+  /* border-radius: 50%; */
+  width:500px;
+  max-width: 500px;
+  height: 100%;
   margin-top: 10px;
 }
 

@@ -17,12 +17,21 @@ const Profile = ({userObj, refreshUser}) => {
     }
 
     const getMyNweets = async () => {
-        const nweets = await dbService.collection("nweets")
-        .where("creatorId", "==", userObj.uid)
-        .orderBy("createdAt", "asc")
-        .get();
+        if(userObj) {
+            //const nweets = 
+            await dbService.collection("nweets")
+            .where("creatorId", "==", userObj.uid)
+            .orderBy("createdAt", "asc")
+            .onSnapshot((snapshot) =>{
+                const newArray = snapshot.docs.map((document) => ({
+                  id: document.id,
+                  ...document.data(),
+                }));
+                setNweets(newArray);
+            });
 
-        setNweets(nweets.docs.map((doc)=> doc.data()));
+           // setNweets(nweets.docs.map((doc)=> doc.data()));
+        }
     }
 
     const onChange = (event) => {
@@ -42,6 +51,9 @@ const Profile = ({userObj, refreshUser}) => {
     }
 
     useEffect(()=> {
+        if(!userObj){
+            onLogoutClick()
+        }
         getMyNweets();
     }, );
 
@@ -58,7 +70,7 @@ const Profile = ({userObj, refreshUser}) => {
             </span>
             <div>
                 {nweets.map((nweet) => (
-                    <Nweet key={nweet.id} nweetObj={nweet}
+                    <Nweet key={nweet.id} nweetObj={nweet} userObj={userObj}
                     isOwner={nweet.creatorId === userObj.uid} />
                 )
                 )}

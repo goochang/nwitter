@@ -13,11 +13,11 @@ const LeftMenu = ({}) => {
                             <FontAwesomeIcon icon={faTwitter} color={"04AAFF"} size="2x" />
                             </div>
                         </Link>
-                        <Link to="/">
+                        <Link to="/login">
                             <div>
                             <FontAwesomeIcon icon={faHome} color={"#04AAFF"} size="2x" />
                             <span style={{marginTop: 10}}>
-                            Home
+                            login
                             </span>
                             </div>
                         </Link>

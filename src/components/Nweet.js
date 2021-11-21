@@ -2,14 +2,37 @@ import { dbService, storageService } from "fbase";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import PImg from '../img/default_profile_normal.png';
 
-const Nweet = ({nweetObj, isOwner}) => {
+const Nweet = ({nweetObj, isOwner, userObj}) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
+
+    const getCreator = async () => {
+        var admin = require("firebase-admin");
+        var serviceAccount = require("../nwitter-58cb4-firebase-adminsdk-61rss-88d51acb43.json");
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+        
+        admin
+        .auth()
+        .getUser(newNweet.creatorId)
+        .then((userRecord) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+        })
+        .catch((error) => {
+        console.log('Error fetching user data:', error);
+        });
+    }
+
+    
 
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
 
+        getCreator()
         if(ok) {
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
 
@@ -48,24 +71,29 @@ const Nweet = ({nweetObj, isOwner}) => {
                 </>
             ) :
                 <div>
-                <h4>{nweetObj.text}</h4>
-                {
-                    nweetObj.attachmentUrl && (
-                        <img src={nweetObj.attachmentUrl} width="50px" height="50px" alt="nweet" /> 
-                    )
-                }
-                {
-                    isOwner && (
-                        <div className="nweet__actions">
-                            <span onClick={onDeleteClick}>
-                                <FontAwesomeIcon icon={faTrash} />
-                            </span>
-                            <span onClick={toggleEditing}>
-                                <FontAwesomeIcon icon={faPencilAlt} />
-                            </span>
-                        </div>
-                    )
-                }
+                    <div className="profile_container">
+                        <img src={PImg} width="50px" height="50px" alt="nweet" /> 
+                        
+                        { userObj && <div><span>{userObj.displayName}</span></div>}
+                    </div>
+                    <h4>{nweetObj.text}</h4>
+                    {
+                        nweetObj.attachmentUrl && (
+                            <img src={nweetObj.attachmentUrl} width="50px" height="50px" alt="nweet" /> 
+                        )
+                    }
+                    {
+                        isOwner && (
+                            <div className="nweet__actions">
+                                <span onClick={onDeleteClick}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </span>
+                                <span onClick={toggleEditing}>
+                                    <FontAwesomeIcon icon={faPencilAlt} />
+                                </span>
+                            </div>
+                        )
+                    }
                 </div>
         }
         </div>

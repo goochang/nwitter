@@ -34,8 +34,6 @@ const NweetFactory = ({userObj}) => {
             creatorId: userObj.uid,
             attachmentUrl,
         });
-
-
     }
 
     const onChange = (event) => {
@@ -68,13 +66,14 @@ const NweetFactory = ({userObj}) => {
                     value={nweet}
                     onChange={onChange}
                     type="text"
-                    placeholder="what's on your mind"
+                    placeholder="What's happening"
                     maxLength={120}
                 />
-
-                <input type="submit" value="&rarr;" className="factoryInput__arrow" />
+                <div className="tweet_submit">
+                    <input type="submit" value="Tweet" className="factoryInput__arrow" />
+                </div>
             </div>
-            <label htmlFor="attatch-file" className="factoryInput__label">
+            <label htmlFor="attach-file" className="factoryInput__label">
                 <span>Add photos</span>
                 <FontAwesomeIcon icon={faPlus} />
             </label>

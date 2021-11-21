@@ -2,8 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faGoogle, faGithub, faGit} from "@fortawesome/free-brands-svg-icons";
 import { authService, firebaseInstance } from "fbase";
 import AuthForm from "components/AuthForm";
+import { useHistory } from "react-router";
 
 function Auth() {
+    const history = useHistory();
 
     const onSocialClick = async (event) => {
         const { target : {name}, } = event;
@@ -14,6 +16,7 @@ function Auth() {
             provider = new firebaseInstance.auth.GithubAuthProvider();
         }
         await authService.signInWithPopup(provider);
+        history.push("/");
     }
   return (
     <div className="authContainer">

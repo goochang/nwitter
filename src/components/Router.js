@@ -9,19 +9,11 @@ const AppRouter = ({isLoggedIn, userObj, refreshUser}) => {
     return (
         <Router>
             <div className="main">
-            {isLoggedIn && <Navigation userObj={userObj} />}
+            {/* {isLoggedIn && <Navigation userObj={userObj} />} */}
             <LeftMenu />
             <Switch>
                 <>
-                    <main 
-                    style={{
-                        // maxWidth: 890,
-                        // width: "100%",
-                        // margin: "0 auto",
-                        // marginTop: 80,
-                        // display: "flex",
-                        // justifyContent: "center"
-                    }}>
+                    <main>
                         <Route exact path="/" 
                         render={()=> <Home userObj={userObj} /> }/>
                         <Route path="/profile" 
