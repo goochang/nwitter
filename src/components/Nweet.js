@@ -1,31 +1,21 @@
 import { dbService, storageService, authService} from "fbase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
-import { firebaseDB } from "../fbase";
 
 const Nweet = ({nweetObj, isOwner, userObj}) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
+    const [creator, setCreator] = useState(null)
 
-    const getCreator = async () =>{
-        const uid = userObj.uid;
-        // const u = firebaseDB.ref('users/' + uid).once("value", snap => {
-        //     console.log(snap.val());
-        // })
-        //const uu = firebaseDB.getInstance().getReference('users').orderByKey().equalTo(uid)
-        const userRefrence = dbService.collection('users');
-        const user = await userRefrence.doc(uid).get();
-        console.log(authService.currentUser)
-
-
-    }
-
+    useEffect( () => {
+        getUser();
+        console.log("getu")
+    }, [])
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
 
-        getCreator();
         if(ok) {
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
 
@@ -47,9 +37,18 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
         toggleEditing();
     }
 
+    const getUser = async () => {
+        const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
+        users.forEach((user) => {
+            console.log(user.data())
+            setCreator(user.data())
+        })
+      }
+
     const toggleEditing = () => setEditing( (prev) => !prev);
 
     return (
+        
         <div className="nweet">
             {editing ? (
                 <>
@@ -63,11 +62,12 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
                 </button>
                 </>
             ) :
+            
                 <div>
                     <div className="profile_container">
-                        <img src={PImg} width="50px" height="50px" alt="nweet" /> 
+                        <img src={creator !== null ? creator.photoURL : PImg} width="50px" height="50px" alt="nweet" /> 
                         
-                        { userObj && <div><span>{userObj.nickname}</span></div>}
+                        { userObj && <div><span>{userObj.displayName}</span></div>}
                     </div>
                     <h4>{nweetObj.text}</h4>
                     {

@@ -20,6 +20,7 @@ const NweetFactory = ({userObj}) => {
         setAttachment("");  
 
         let attachmentUrl = "";
+        
         if(_attachment !== ""){
             const attachmentRef =  storageService
             .ref()
@@ -27,14 +28,17 @@ const NweetFactory = ({userObj}) => {
             const response = await attachmentRef.putString(_attachment, "data_url");
             attachmentUrl = await response.ref.getDownloadURL();
         }
-
+        console.log(userObj)
         await dbService.collection("nweets").add({
             text:_nweet,
             createdAt: Date.now(),
             creatorId: userObj.uid,
-            creator: userObj.nickname,
+            creatorName: userObj.displayName,
+            creatorEmail: userObj.email,
             attachmentUrl,
         });
+
+     
     }
 
     const onChange = (event) => {

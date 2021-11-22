@@ -9,19 +9,20 @@ function App() {
 
   const refreshUser = () => {
     const user=  authService.currentUser;
+    
     setUserObj({
       uid: user.uid,
       displayName: user.displayName,
-      updateProfile: (args) => user.updateProfile(args)
+      updateProfile: (args) => user.updateProfile(args),
+      photoURL: user.photoURL
     });
 
-    console.log(user);
   }
   
   const addUser = async (user) => {
     await dbService.collection("users").add({
       uid:user.uid,
-      displayName: user.providerData[0].displayName ? user.providerData[0].displayName : "",
+      displayName: user.providerData[0].displayName ? user.providerData[0].displayName : user.email,
       email: user.email ? user.email : "",
       photoURL: user.photoURL ? user.photoURL : "",
       timestamp : user.metadata.a ? user.metadata.a : "",
@@ -34,10 +35,8 @@ function App() {
     .get();
 
     if(users.size === 0){
-      
       addUser(user);
     }
-    console.log(user)
   }
 
   useEffect(()=>{
@@ -45,14 +44,17 @@ function App() {
       if(user){
         setUserObj({
           uid: user.uid,
-          displayName: user.displayName,
-          updateProfile: (args) => user.updateProfile(args)
+          displayName: user.displayName ? user.displayName : user.email,
+          email: user.email ? user.email : "",
+          updateProfile: (args) => user.updateProfile(args),
+          photoURL: user.photoURL
         });
         getUser(user);
       } else{
         setUserObj(false);
       }
       setInit(true);
+      
     })
   },[])
 
