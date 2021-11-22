@@ -11,7 +11,6 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
 
     useEffect( () => {
         getUser();
-        console.log("getu")
     }, [])
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
@@ -40,9 +39,9 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
     const getUser = async () => {
         const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
         users.forEach((user) => {
-            console.log(user.data())
             setCreator(user.data())
         })
+
       }
 
     const toggleEditing = () => setEditing( (prev) => !prev);
@@ -63,30 +62,39 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
                 </>
             ) :
             
-                <div>
-                    <div className="profile_container">
-                        <img src={creator !== null ? creator.photoURL : PImg} width="50px" height="50px" alt="nweet" /> 
-                        
-                        { userObj && <div><span>{userObj.displayName}</span></div>}
+                <div className="nweet_container base">
+                    <div className="nweet_profile base">
+                        <img src={creator !== null ? (creator.photoURL !== "" ? creator.photoURL : PImg)  : ""} 
+                        alt="profile_image" /> 
                     </div>
-                    <h4>{nweetObj.text}</h4>
-                    {
-                        nweetObj.attachmentUrl && (
-                            <img src={nweetObj.attachmentUrl} width="50px" height="50px" alt="nweet" /> 
-                        )
-                    }
-                    {
-                        isOwner && (
-                            <div className="nweet__actions">
-                                <span onClick={onDeleteClick}>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </span>
-                                <span onClick={toggleEditing}>
-                                    <FontAwesomeIcon icon={faPencilAlt} />
-                                </span>
-                            </div>
-                        )
-                    }
+                    <div className="nweet_content base">
+                        { creator && 
+                        <div className="nweet_profile_name_container">
+                            <span className="profile_displayName">{creator.displayName}</span>
+                        </div>}
+                        
+                        <div className="nweet_content_box base">
+                            <span>{nweetObj.text}</span>
+                            {
+                                nweetObj.attachmentUrl && (
+                                    <img src={nweetObj.attachmentUrl} alt="nweet_attachment" /> 
+                                )
+                            }
+                        
+                            {
+                                isOwner && (
+                                    <div className="nweet__actions">
+                                        <span onClick={onDeleteClick}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </span>
+                                        <span onClick={toggleEditing}>
+                                            <FontAwesomeIcon icon={faPencilAlt} />
+                                        </span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
                 </div>
         }
         </div>

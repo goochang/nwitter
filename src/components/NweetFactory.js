@@ -2,7 +2,8 @@ import { dbService, storageService } from "fbase";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import PImg from '../img/default_profile_normal.png';
 
 const NweetFactory = ({userObj}) => {
 
@@ -64,35 +65,41 @@ const NweetFactory = ({userObj}) => {
     }
 
     return (
-        <form onSubmit={onSubmit} className="factoryForm">
-            <div className="factoryInput__container">
-                <input 
-                    className="factoryInput__input"
-                    value={nweet}
-                    onChange={onChange}
-                    type="text"
-                    placeholder="What's happening"
-                    maxLength={120}
-                />
-                <div className="tweet_submit">
-                    <input type="submit" value="Tweet" className="factoryInput__arrow" />
+        <form onSubmit={onSubmit} className="factoryForm base">
+            <div className="factoryInput_profile base">
+                <img src={userObj.photoURL !== "" ? userObj.photoURL  : PImg} alt="profile_image" /> 
+            </div>
+            <div className="factoryInput__container base">
+                <div className="factoryInput_text">
+                    <input 
+                        className="factoryInput__input"
+                        value={nweet}
+                        onChange={onChange}
+                        type="text"
+                        placeholder="What's happening"
+                        maxLength={120}
+                    />
+                </div>
+                { attachment && 
+                    (<div className="factoryForm__attachment base">
+                        <img src={attachment} style={{backgroundImage: attachment,}} alt="attachment" />
+                        <div className="factoryForm__clear" onClick={onClearAttachment}>
+                            {/* <span>Remove</span> */}
+                            <FontAwesomeIcon icon={faTimesCircle} />
+                        </div>
+                    </div>
+                    )}
+                <div className="factoryInput_button base">
+                    <input type="submit" value="Tweet" className="factoryInput__arrow" aria-disabled={nweet === ""} />
+                    
+                    <input id="attach-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
+                    <label htmlFor="attach-file" className="factoryInput__label">
+                        <span>Add photos</span>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </label>
                 </div>
             </div>
-            <label htmlFor="attach-file" className="factoryInput__label">
-                <span>Add photos</span>
-                <FontAwesomeIcon icon={faPlus} />
-            </label>
-
-            <input id="attach-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
-            { attachment && 
-            (<div className="factoryForm__attachment">
-                <img src={attachment} style={{backgroundImage: attachment,}} alt="attachment" />
-                <div className="factoryForm__clear" onClick={onClearAttachment}>
-                    <span>Remove</span>
-                    <FontAwesomeIcon icon={faTimes} />
-                </div>
-            </div>
-            )}
+            
         </form>
     )
 };

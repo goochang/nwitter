@@ -20,7 +20,7 @@ function Home({userObj}) {
     }, []);
 
   return (
-    <div className="container">
+    <div>
       <NweetFactory userObj={userObj}  />
       <div> 
         {  

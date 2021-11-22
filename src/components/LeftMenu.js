@@ -9,12 +9,12 @@ const LeftMenu = ({}) => {
                 <div className="header_container">
                     <nav>
                         <Link to="/" style={{marginRight: 10}}>
-                            <div>
+                            <div className="header_content">
                             <FontAwesomeIcon icon={faTwitter} color={"04AAFF"} size="2x" />
                             </div>
                         </Link>
                         <Link to="/login">
-                            <div>
+                            <div className="header_content">
                             <FontAwesomeIcon icon={faHome} color={"#04AAFF"} size="2x" />
                             <span style={{marginTop: 10}}>
                             login
@@ -22,7 +22,7 @@ const LeftMenu = ({}) => {
                             </div>
                         </Link>
                         <Link to="/explore">
-                            <div>
+                            <div className="header_content">
                             <FontAwesomeIcon icon={faHashtag} color={"#04AAFF"} size="2x" />
                             <span style={{marginTop: 10}}>
                             Explore
@@ -30,7 +30,7 @@ const LeftMenu = ({}) => {
                             </div>
                         </Link>
                         <Link to="/profile">
-                            <div>
+                            <div className="header_content">
                             <FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
                             <span style={{marginTop: 10}}>
                             Profile
@@ -38,7 +38,7 @@ const LeftMenu = ({}) => {
                             </div>
                         </Link>
                         <Link to="/setting">
-                            <div>
+                            <div className="header_content">
                             <FontAwesomeIcon icon={faCog} color={"#04AAFF"} size="2x" />
                             <span style={{marginTop: 10}}>
                             Setting

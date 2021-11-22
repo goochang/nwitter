@@ -58,7 +58,7 @@ const Profile = ({userObj, refreshUser}) => {
     }, );
 
     return (
-        <div className="container">
+        <div>
             <form onSubmit={onSubmit} className="profileForm">
                 <input type="text" value={name} placeholder="what's your name?" 
                 onChange={onChange} autoFocus className="formInput" />
