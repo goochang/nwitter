@@ -1,4 +1,4 @@
-import { dbService, storageService, authService} from "fbase";
+import { dbService, storageService} from "fbase";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
@@ -9,9 +9,7 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
     const [newNweet, setNewNweet] = useState(nweetObj.text);
     const [creator, setCreator] = useState(null)
 
-    useEffect( () => {
-        getUser();
-    }, [])
+    
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
 
@@ -36,13 +34,18 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
         toggleEditing();
     }
 
-    const getUser = async () => {
-        const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
-        users.forEach((user) => {
-            setCreator(user.data())
-        })
+    
 
-      }
+    useEffect( () => {
+        const getUser = async () => {
+            const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
+            users.forEach((user) => {
+                setCreator(user.data())
+            })
+    
+        }
+        getUser();
+    }, [nweetObj])
 
     const toggleEditing = () => setEditing( (prev) => !prev);
 

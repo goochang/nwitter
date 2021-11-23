@@ -29,17 +29,19 @@ function App() {
     });
   }
 
-  const getUser = async (user) => {
-    const users = await dbService.collection("users")
-    .where("email", "==", user.email)
-    .get();
-
-    if(users.size === 0){
-      addUser(user);
-    }
-  }
+  
 
   useEffect(()=>{
+    const getUser = async (user) => {
+      const users = await dbService.collection("users")
+      .where("email", "==", user.email)
+      .get();
+  
+      if(users.size === 0){
+        addUser(user);
+      }
+    }
+
     authService.onAuthStateChanged((user)=>{
       if(user){
         setUserObj({

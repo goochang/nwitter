@@ -19,7 +19,8 @@ const AppRouter = ({isLoggedIn, userObj, refreshUser}) => {
                             render={()=> <Home userObj={userObj} /> }/>
                             <Route path="/profile" 
                             render={()=> <Profile userObj={userObj} refreshUser={refreshUser} />}/>
-                            <Route path="/login" component={Auth}/>
+                            <Route path="/login" 
+                            render={()=> <Auth userObj={userObj} /> } />
                         </div>
                     </div>
                 </>
