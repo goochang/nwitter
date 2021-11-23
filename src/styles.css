@@ -456,3 +456,94 @@ header .header_content span {
   font-size: 12px;
   text-decoration: underline;
 }
+
+
+/* Profile */
+.profileEdit_container {
+
+}
+.cover_image {
+  background-color: rgb(47, 51, 54);
+  min-height: 200px;
+}
+
+.profile_container {
+  padding: 65px 10px 0 10px;
+  min-height: 200px;
+}
+
+.profile_container .edit_profile{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: black;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 10px 15px;
+  margin: 15px 15px 0 0;
+  text-align: center;
+  border-radius: 20px;
+  border:2px solid rgb(47, 51, 54);;
+  box-sizing: border-box;
+  color: white;
+}
+
+.profile_container input[type=file] {
+  display: none;
+}
+
+.profile_container  img {
+  position: absolute;
+  border-radius: 50%;
+  top: -65px;
+  width:130px;
+  height: 130px;
+  margin-right: 15px;
+  border: 3px solid black;
+}
+
+.profile_container span.profile_name {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.profile_container .user_id {
+  color: rgb(110, 118, 125);
+  font-size: 15px;
+  line-height: 25px;
+}
+
+.profile_container .join_date {
+  color: rgb(110, 118, 125);
+  font-size: 15px;
+  line-height: 25px;
+}
+
+.follow_wrap span {
+  font-size: 15px;
+  line-height: 25px;
+}
+.follow_wrap .f_cnt {
+  color: white;
+  margin-right: 5px;
+}
+.follow_wrap .f_text {
+  color: rgb(110, 118, 125);
+  margin-right: 15px;
+}
+
+/* Modal */
+.ReactModal__Overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(91, 112, 131, 0.4) !important;
+}
+.setProfileModal {
+  width: 600px;
+  height: 650px;
+  background-color: black;
+  border-radius: 10px;
+  padding: 0 32px;
+}

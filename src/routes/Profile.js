@@ -1,4 +1,5 @@
 import Nweet from "components/Nweet";
+import ProfileEdit from "components/ProfileEdit";
 import { authService, dbService } from "fbase";
 import { useEffect, useState } from "react";
 //import { useHistory } from "react-router";
@@ -59,6 +60,7 @@ const Profile = ({userObj, refreshUser}) => {
 
     return (
         <div>
+            <ProfileEdit userObj={userObj} />
             <form onSubmit={onSubmit} className="profileForm">
                 <input type="text" value={name} placeholder="what's your name?" 
                 onChange={onChange} autoFocus className="formInput" />

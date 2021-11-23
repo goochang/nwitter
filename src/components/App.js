@@ -12,11 +12,12 @@ function App() {
     
     setUserObj({
       uid: user.uid,
-      displayName: user.displayName,
+      displayName: user.displayName ? user.displayName : user.email,
+      email: user.email ? user.email : "",
       updateProfile: (args) => user.updateProfile(args),
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
+      timestamp: user.metadata.creationTime
     });
-
   }
   
   const addUser = async (user) => {
@@ -25,11 +26,9 @@ function App() {
       displayName: user.providerData[0].displayName ? user.providerData[0].displayName : user.email,
       email: user.email ? user.email : "",
       photoURL: user.photoURL ? user.photoURL : "",
-      timestamp : user.metadata.a ? user.metadata.a : "",
+      timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
     });
   }
-
-  
 
   useEffect(()=>{
     const getUser = async (user) => {
@@ -43,20 +42,21 @@ function App() {
     }
 
     authService.onAuthStateChanged((user)=>{
+      console.log(user)
       if(user){
         setUserObj({
           uid: user.uid,
           displayName: user.displayName ? user.displayName : user.email,
           email: user.email ? user.email : "",
           updateProfile: (args) => user.updateProfile(args),
-          photoURL: user.photoURL
+          photoURL: user.photoURL,
+          timestamp: user.metadata.creationTime
         });
         getUser(user);
       } else{
         setUserObj(false);
       }
       setInit(true);
-      
     })
   },[])
 
