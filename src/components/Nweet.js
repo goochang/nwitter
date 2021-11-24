@@ -34,15 +34,12 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
         toggleEditing();
     }
 
-    
-
     useEffect( () => {
         const getUser = async () => {
             const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
             users.forEach((user) => {
                 setCreator(user.data())
             })
-    
         }
         getUser();
     }, [nweetObj])

@@ -38,8 +38,6 @@ const NweetFactory = ({userObj}) => {
             creatorEmail: userObj.email,
             attachmentUrl,
         });
-
-     
     }
 
     const onChange = (event) => {
@@ -67,7 +65,7 @@ const NweetFactory = ({userObj}) => {
     return (
         <form onSubmit={onSubmit} className="factoryForm base">
             <div className="factoryInput_profile base">
-                <img src={userObj.photoURL !== "" ? userObj.photoURL  : PImg} alt="profile_image" /> 
+                <img src={userObj ? userObj.photoURL : PImg} alt="profile_image" /> 
             </div>
             <div className="factoryInput__container base">
                 <div className="factoryInput_text">

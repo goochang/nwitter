@@ -2,22 +2,31 @@ import { useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
 import { dbService } from "../fbase";
+import PImg from '../img/default_profile_normal.png';
 
 function App() {
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
-  const refreshUser = () => {
-    const user=  authService.currentUser;
-    
+  const setUserData = (user) => {
+    const email = user.email;
+    const userId = email.indexOf("@") !== -1 ? "@" + email.split("@")[0] : "";
+
+    console.log(user)
     setUserObj({
       uid: user.uid,
+      userId: userId,
       displayName: user.displayName ? user.displayName : user.email,
       email: user.email ? user.email : "",
       updateProfile: (args) => user.updateProfile(args),
-      photoURL: user.photoURL,
+      photoURL: user.photoURL !== null ? user.photoURL  : PImg,
       timestamp: user.metadata.creationTime
     });
+  }
+
+  const refreshUser = () => {
+    const user=  authService.currentUser;
+    setUserData(user)
   }
   
   const addUser = async (user) => {
@@ -42,16 +51,8 @@ function App() {
     }
 
     authService.onAuthStateChanged((user)=>{
-      console.log(user)
       if(user){
-        setUserObj({
-          uid: user.uid,
-          displayName: user.displayName ? user.displayName : user.email,
-          email: user.email ? user.email : "",
-          updateProfile: (args) => user.updateProfile(args),
-          photoURL: user.photoURL,
-          timestamp: user.metadata.creationTime
-        });
+        setUserData(user)
         getUser(user);
       } else{
         setUserObj(false);
