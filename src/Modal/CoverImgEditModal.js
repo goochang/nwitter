@@ -6,7 +6,7 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import React, { useEffect, useRef, useState } from "react";
 
-const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
 
     const [crop, setCrop] = useState({
         unit: "px",
@@ -229,4 +229,4 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
         </div>
     )
 }
-export default ProfileImgEditModal;
+export default CoverImgEditModal;

@@ -4,7 +4,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CoverImgModal from "./CoverImgModal";
 import ProfileImgEditModal from "./ProfileImgEditModal";
 
-const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg}) => {
+const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+    const onFileChange = (event) => {
+        const { target: {files}, } = event;
+        const theFile = files[0];
+        
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            const { currentTarget : {result }, } = finishedEvent;
+
+            setProfileImg(result);
+            setModalContent(
+                <ProfileImgEditModal
+                    setModalContent={setModalContent} 
+                    userObj={userObj}
+                    setModalNum={setModalNum}
+                    profileImg={result}
+                    coverImg={coverImg}
+                    setProfileImg={setProfileImg} setCoverImg={setCoverImg}
+                />
+            );
+        }
+
+        if(theFile !== undefined)
+            reader.readAsDataURL(theFile);
+    }
+    
     return (
         <div className="profile_modal base">
             <div className="base center">
@@ -38,8 +63,10 @@ const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, cov
                     setModalNum={setModalNum}
                     profileImg={profileImg}
                     coverImg={coverImg}
+                    setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                 />);
             }} >skip</button>
+            <input id="profile-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
         </div>
     )
 }

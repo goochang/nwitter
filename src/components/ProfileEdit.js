@@ -36,12 +36,14 @@ const ProfileEdit = ({userObj}) => {
                             setModalNum={setModalNum}
                             profileImg={result}
                             coverImg={coverImg}
+                            setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                         />
                     );
                     break;
                 case 2:
                     break;
                 case 3:
+                    console.log(profileImg)
                     setCoverImg(result);
                     setModalContent(
                         <CoverImgModal 
@@ -50,6 +52,7 @@ const ProfileEdit = ({userObj}) => {
                             setModalNum={setModalNum}
                             profileImg={profileImg}
                             coverImg={result}
+                            setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                         />
                     );
                     break;
@@ -73,6 +76,7 @@ const ProfileEdit = ({userObj}) => {
                 setModalNum={setModalNum}
                 profileImg={img}
                 coverImg={coverImg}
+                setProfileImg={setProfileImg} setCoverImg={setCoverImg}
             />
         );
     }
@@ -90,6 +94,7 @@ const ProfileEdit = ({userObj}) => {
 
     useEffect( () => {
         setProfileModal(profileImg);
+        console.log(profileImg)
     },[])
 
     return (
@@ -100,7 +105,7 @@ const ProfileEdit = ({userObj}) => {
                 <div className="profile_container base">
                     <form>
                         <button className="edit_profile" onClick={openModal}>Set up profile</button>
-                        <input id="profile-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
+                        
                         <input id="cover-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
                     </form>
                     <img src={userObj.photoURL} 

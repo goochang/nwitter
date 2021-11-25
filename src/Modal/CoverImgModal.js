@@ -1,9 +1,14 @@
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import ProfileImgModal from "./ProfileImgModal";
 
-const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg}) => {
+const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+    useEffect(() => {
+       console.log(profileImg) 
+        
+    },[]);
 
     return (
         <div className="cover_modal base">
