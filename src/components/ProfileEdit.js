@@ -1,10 +1,10 @@
 import CoverImgModal from 'Modal/CoverImgModal';
+import ProfileImgEditModal from 'Modal/ProfileImgEditModal';
 import ProfileImgModal from 'Modal/ProfileImgModal';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
-import PImg from '../img/default_profile_normal.png';
 
 const ProfileEdit = ({userObj}) => {
     const timestamp = userObj.timestamp;
@@ -24,12 +24,39 @@ const ProfileEdit = ({userObj}) => {
         const reader = new FileReader();
         reader.onloadend = (finishedEvent) => {
             const { currentTarget : {result }, } = finishedEvent;
-            console.log(theFile)
+
             console.log(modalNum)
-            if(modalNum === 1){
-                setProfileModal(result);
-            } else {
-                setCoverModal(result);
+            switch(modalNum){
+                case 1:
+                    setProfileImg(result);
+                    setModalContent(
+                        <ProfileImgEditModal
+                            setModalContent={setModalContent} 
+                            userObj={userObj}
+                            setModalNum={setModalNum}
+                            profileImg={result}
+                            coverImg={coverImg}
+                        />
+                    );
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    setCoverImg(result);
+                    setModalContent(
+                        <CoverImgModal 
+                            setModalContent={setModalContent} 
+                            userObj={userObj}
+                            setModalNum={setModalNum}
+                            profileImg={profileImg}
+                            coverImg={result}
+                        />
+                    );
+                    break;
+                case 4: 
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -38,26 +65,14 @@ const ProfileEdit = ({userObj}) => {
     }
 
     const setProfileModal = (img) =>{
+        setProfileImg(img);
         setModalContent(
-            <ProfileImgModal 
+            <ProfileImgModal
                 setModalContent={setModalContent} 
                 userObj={userObj}
-                modalNum={modalNum}
                 setModalNum={setModalNum}
                 profileImg={img}
                 coverImg={coverImg}
-            />
-        );
-    }
-    const setCoverModal = (img) =>{
-        setModalContent(
-            <CoverImgModal 
-                setModalContent={setModalContent} 
-                userObj={userObj}
-                modalNum={modalNum}
-                setModalNum={setModalNum}
-                profileImg={profileImg}
-                coverImg={img}
             />
         );
     }
@@ -65,6 +80,12 @@ const ProfileEdit = ({userObj}) => {
     const openModal = () => {
         setIsModal(!isModal);
         setModalNum(isModal ? 0 : 1);
+    }
+
+    const onRequestClose = () => {
+        openModal(); 
+        setModalNum(0);
+        setProfileModal("");
     }
 
     useEffect( () => {
@@ -98,10 +119,10 @@ const ProfileEdit = ({userObj}) => {
                 <ReactModal 
                     shouldCloseOnOverlayClick={true}
                     shouldCloseOnEsc={false}
-                    onRequestClose={()=> openModal()}
+                    onRequestClose={()=> onRequestClose() }
                     isOpen={isModal}
                     ariaHideApp={false}
-                    contentLabel="Minimal Modal Example"
+                    // contentLabel="Minimal Modal Example"
                     appElement={document.getElementById('app')}
                     className="setProfileModal base"
                 >
