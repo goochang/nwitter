@@ -1,9 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faCog, faHome, faHashtag, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
+import { authService } from "fbase";
 
-const LeftMenu = () => {
+const LeftMenu = (userObj) => {
+    const history = useHistory();
+    
+    const onLogoutClick = () => {
+        authService.signOut();
+        history.push("/");
+    }
+    useEffect(() => {
+        // if(!userObj){
+        //     onLogoutClick()
+        // }
+    }, );
     return (
         <header>
             <div className="header_main">
@@ -30,14 +43,6 @@ const LeftMenu = () => {
                             </span>
                             </div>
                         </Link>
-                        <Link to="/profile">
-                            <div className="header_content">
-                            <FontAwesomeIcon icon={faUser} color={"rgb(217, 217, 217)"} size="2x" />
-                            <span style={{marginTop: 10}}>
-                            Profile
-                            </span>
-                            </div>
-                        </Link>
                         <Link to="/setting">
                             <div className="header_content">
                             <FontAwesomeIcon icon={faCog} color={"rgb(217, 217, 217)"} size="2x" />
@@ -47,7 +52,23 @@ const LeftMenu = () => {
                             </div>
                         </Link>
 
+                        { userObj && (
+                            <Link to="/profile">
+                                <div className="header_content">
+                                <FontAwesomeIcon icon={faUser} color={"rgb(217, 217, 217)"} size="2x" />
+                                <span style={{marginTop: 10}}>
+                                Profile
+                                </span>
+                                </div>
+                            </Link>,
+                            <span className="logOutBtn" onClick={onLogoutClick}>
+                                Log Out
+                            </span>
+                        )
+                        }
                     </nav>
+
+                    
                 </div>
             </div>
         </header>

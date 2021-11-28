@@ -4,12 +4,13 @@ import Home from 'routes/Home';
 import Profile from 'routes/Profile';
 import LeftMenu from './LeftMenu';
 import Navigation from './Navigation';
+import Side from './Side';
 
-const AppRouter = ({isLoggedIn, userObj, refreshUser}) => {
+const AppRouter = ({userObj, refreshUser}) => {
     return (
         <Router>
             <main>
-            <LeftMenu />
+            <LeftMenu userObj={userObj} />
             <Switch>
                 <>
                     <div className="main">
@@ -22,6 +23,8 @@ const AppRouter = ({isLoggedIn, userObj, refreshUser}) => {
                             <Route path="/login" 
                             render={()=> <Auth userObj={userObj} /> } />
                         </div>
+
+                        <Side />
                     </div>
                 </>
             </Switch>

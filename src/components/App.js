@@ -12,7 +12,6 @@ function App() {
     const email = user.email;
     const userId = email.indexOf("@") !== -1 ? "@" + email.split("@")[0] : "";
 
-    console.log(user)
     setUserObj({
       uid: user.uid,
       userId: userId,
@@ -20,6 +19,7 @@ function App() {
       email: user.email ? user.email : "",
       updateProfile: (args) => user.updateProfile(args),
       photoURL: user.photoURL !== null ? user.photoURL  : PImg,
+      cover: user.coverURL ? user.coverURL : "",
       timestamp: user.metadata.creationTime
     });
   }
@@ -35,6 +35,7 @@ function App() {
       displayName: user.providerData[0].displayName ? user.providerData[0].displayName : user.email,
       email: user.email ? user.email : "",
       photoURL: user.photoURL ? user.photoURL : "",
+      cover: user.coverURL ? user.coverURL : "",
       timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
     });
   }

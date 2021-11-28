@@ -6,12 +6,12 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import React, { useEffect, useRef, useState } from "react";
 
-const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
 
     const [crop, setCrop] = useState({
         unit: "px",
         width: 500,
-        height: 450,
+        height: 200,
         aspect: 16 / 9
     });
     const [completedCrop, setCompletedCrop] = useState(null);
@@ -25,45 +25,18 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
 
     const onImageLoaded = (image) => {
         imageRef.current = image;
-        if(imageRef.current !== null) {
-            const h = imageRef.current.clientHeight;
-            const w = imageRef.current.clientWidth;
-            
-            if(w < h){
-                setCrop({
-                    width: 500,
-                    height: 450,
-                    aspect: 16 / 9
-                });
-            } else {
-                setCrop({
-                    width: 450,
-                    height: 500,
-                    aspect: 9 / 16
-                });
-                imageRef.current.style.left = 0;
-            }
-        }
     };
 
     const onChange = (_crop, percent_crop) => {
         setCrop(_crop);
+        console.log(_crop)
         if(imageRef.current !== null) {
             const h = imageRef.current.clientHeight;
             const w = imageRef.current.clientWidth;
             
-            if(w < h){
-                setImgForm(1)
-                if(_crop.y > h-450) _crop.y = h-450;
-                const y_val = (_crop.y - 25) + "px";
-                imageRef.current.style.bottom = y_val;
-            } else if(w > h){ //옆으로 긴거
-                setImgForm(2)
-                let x_val = (_crop.x - 365)
-                if(x_val > 0) x_val = 0
-                if(x_val < h-w-25) x_val = h-w-25
-                imageRef.current.style.left = x_val + "px";;
-            }
+            // if(_crop.y > h-450) _crop.y = h-450;
+            const y_val = (_crop.y - 25) + "px";
+            imageRef.current.style.bottom = y_val;
         }  
     }
 
@@ -98,48 +71,26 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
         const ctx = canvas.getContext('2d');
         const pixelRatio = window.devicePixelRatio;
     
-        if(w<h){
-            canvas.width = 500;
-            canvas.height = 450;
-            canvas.style.width = "500px";
-            canvas.style.height = "450px";
-        } else {
-            canvas.width = 450;
-            canvas.height = 500;
-            canvas.style.width = "450px";
-            canvas.style.height = "500px";
-        }
+        canvas.width = 500;
+        canvas.height = 200;
+        canvas.style.width = "500px";
+        canvas.style.height = "200px";
     
         ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         ctx.imageSmoothingQuality = 'high';
     
-        if(w<h){
-            ctx.drawImage(
-                image,
-                crop.x * scaleX,
-                crop.y * scaleY,
-                crop.width * scaleX,
-                crop.height * scaleY,
-                0,
-                0,
-                500,
-                450
-            ); 
-        } else {
-            const _x = 385 - (crop.x > 145 ? crop.x : 145);
-            console.log(_x + " : " + crop.x)
-            ctx.drawImage(
-                image,
-                _x,
-                0,
-                crop.width * scaleX,
-                crop.height * scaleY,
-                0,
-                0,
-                450,
-                500
-            ); 
-        }       
+        ctx.drawImage(
+            image,
+            crop.x * scaleX,
+            crop.y * scaleY,
+            crop.width * scaleX,
+            crop.height * scaleY,
+            0,
+            0,
+            500,
+            200
+        ); 
+
         console.log("cap")
         return new Promise((resolve, reject) => {
             canvas.toBlob(
@@ -153,7 +104,6 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                     window.URL.revokeObjectURL(fileUrl);
                     setFileUrl(window.URL.createObjectURL(blob));
                     resolve(fileUrl);
-                    console.log(fileUrl)
                 },
                 'image/jpeg',
                 1
@@ -167,12 +117,13 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                 <button className="cancelBtn" onClick={() => {
                     setModalNum(1);
                     setModalContent(
-                        <ProfileImgModal 
+                        <CoverImgModal 
                             setModalContent={setModalContent} 
                             userObj={userObj}
                             setModalNum={setModalNum}
                             profileImg={profileImg}
                             coverImg={coverImg}
+                            openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                     />);
                 }} >
@@ -180,15 +131,17 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                 </button>
                 <span>미디어 편집</span>
                 <div>
-                    <button className="okBtn" onClick={() => {
+                    <button className="okBtn" aria-disabled={fileUrl === ""} onClick={() => {
+                        if(fileUrl === "") return;
                         setModalNum(3);
                         setModalContent(
                             <CoverImgModal 
                             setModalContent={setModalContent} 
                             userObj={userObj}
                             setModalNum={setModalNum}
-                            profileImg={fileUrl}
-                            coverImg={coverImg}
+                            profileImg={profileImg}
+                            coverImg={fileUrl}
+                            openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                         />);
                     }} >적용하기</button>
@@ -196,10 +149,10 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
             </div>
 
             <div className="img_preview base center ">
-                {profileImg && (
+                {coverImg && (
                 
                 <ReactCrop
-                    src={profileImg}
+                    src={coverImg}
                     crop={crop}
                     ruleOfThirds
                     onImageLoaded={(i) => onImageLoaded(i)}
@@ -207,10 +160,10 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                     onCropChange
                     onComplete={(c, pc) => onCropComplete(c, pc)}
                     locked={true}
-                    className={imgForm === 1 ? "rCrop_wBig" : (imgForm === 2 ? "rCrop_hBig" : "rCrop_square")}
+                    className="cover_crop"
                 />
                 )}
-                {profileImg && (
+                {coverImg && (
                     <div>
                     <canvas
                       ref={previewCanvasRef}

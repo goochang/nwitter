@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CoverImgModal from "./CoverImgModal";
 import ProfileImgEditModal from "./ProfileImgEditModal";
 
-const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
     const onFileChange = (event) => {
         const { target: {files}, } = event;
         const theFile = files[0];
@@ -63,6 +63,7 @@ const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, cov
                     setModalNum={setModalNum}
                     profileImg={profileImg}
                     coverImg={coverImg}
+                    openModal={openModal}
                     setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                 />);
             }} >skip</button>

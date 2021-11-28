@@ -172,8 +172,19 @@ header .header_content span {
   box-sizing: border-box;
 }
 
-.logOut {
-  margin-top: 50px;
+.logOutBtn {
+  margin-top: 20px;
+  border-radius: 50px;
+  width: 90%;
+  min-height: 52px;
+  line-height: 52px;
+  text-align: center;
+  color: white;
+  background-color: #04aaff;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 /* Nwitter Factory */
@@ -621,7 +632,7 @@ header .header_content span {
   opacity: 0.5;
 }
 
-.profile_modal button.cancelBtn {
+.profile_modal button.cancelBtn, .cover_modal button.cancelBtn {
   background-color: inherit;
   border: none;
 }
@@ -656,6 +667,9 @@ header .header_content span {
   /* border: 2px solid rgb(47, 51, 54); */
   box-sizing: border-box;
   color: black;
+}
+.profile_edit_nav button.okBtn[aria-disabled=true]{
+  opacity: 0.5;
 }
 
 .profile_edit_modal .img_preview{
@@ -694,14 +708,11 @@ header .header_content span {
   opacity: 0.5;
 }
 .ReactCrop__crop-selection{
-  /* top: 25px !important; */
   border-width: 4px;
   border-color: rgb(29, 155, 240);
   border-image-slice: 0;
   border-image-repeat: inherit;
   border-image-source: none;
-  /* width: 500px !important; */
-  /* height: 450px !important; */
 }
 .ReactCrop__crop-selection *{
   display: none;
@@ -749,4 +760,47 @@ header .header_content span {
   right: -600px;
   width: 500px;
   height: 450px;
+}
+
+.ReactCrop.cover_crop .ReactCrop__crop-selection{
+  top: 25px !important;
+}
+
+.ReactCrop.cover_crop .ReactCrop__image{
+  width: 100%;
+}
+
+/* side */
+.side {
+  width: 350px;
+  margin-left: 15px;
+}
+
+.search_container {
+  min-height: 32px;
+  height: 53px;
+  border-radius: 50px;
+  border: 2px solid rgb(47, 51, 54);
+  padding: 0 15px;
+  background-color: rgb(32, 35, 39);
+}
+.search_container.focus {
+  border-color: rgb(29,155, 240);
+
+}
+.search_container.focus svg{
+  color: rgb(29,155, 240);
+}
+.search_container svg {
+  color: rgb(110, 118, 125);
+  font-size: 17px;
+}
+.searchInput {
+  margin-left: 15px;
+}
+.search_label{
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  align-items: center;
 }

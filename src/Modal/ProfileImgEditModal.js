@@ -6,7 +6,7 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import React, { useEffect, useRef, useState } from "react";
 
-const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg}) => {
+const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
 
     const [crop, setCrop] = useState({
         unit: "px",
@@ -63,7 +63,7 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                 if(x_val > 0) x_val = 0
                 if(x_val < h-w-25) x_val = h-w-25
                 imageRef.current.style.left = x_val + "px";;
-            }
+            } else {}
         }  
     }
 
@@ -173,6 +173,7 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                             setModalNum={setModalNum}
                             profileImg={profileImg}
                             coverImg={coverImg}
+                            openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                     />);
                 }} >
@@ -180,7 +181,8 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                 </button>
                 <span>미디어 편집</span>
                 <div>
-                    <button className="okBtn" onClick={() => {
+                    <button className="okBtn" aria-disabled={fileUrl === ""} onClick={() => {
+                        if(fileUrl === "")return;
                         setModalNum(3);
                         setModalContent(
                             <CoverImgModal 
@@ -189,6 +191,7 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                             setModalNum={setModalNum}
                             profileImg={fileUrl}
                             coverImg={coverImg}
+                            openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                         />);
                     }} >적용하기</button>

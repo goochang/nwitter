@@ -1,3 +1,4 @@
+import { firebaseDB } from 'fbase';
 import CoverImgModal from 'Modal/CoverImgModal';
 import ProfileImgEditModal from 'Modal/ProfileImgEditModal';
 import ProfileImgModal from 'Modal/ProfileImgModal';
@@ -15,57 +16,6 @@ const ProfileEdit = ({userObj}) => {
     const [isModal, setIsModal] = useState(false);
     const [modalNum, setModalNum] = useState(0);
     const [modalContent, setModalContent] = useState(null);
-    
-    
-    const onFileChange = (event) => {
-        const { target: {files}, } = event;
-        const theFile = files[0];
-        
-        const reader = new FileReader();
-        reader.onloadend = (finishedEvent) => {
-            const { currentTarget : {result }, } = finishedEvent;
-
-            console.log(modalNum)
-            switch(modalNum){
-                case 1:
-                    setProfileImg(result);
-                    setModalContent(
-                        <ProfileImgEditModal
-                            setModalContent={setModalContent} 
-                            userObj={userObj}
-                            setModalNum={setModalNum}
-                            profileImg={result}
-                            coverImg={coverImg}
-                            setProfileImg={setProfileImg} setCoverImg={setCoverImg}
-                        />
-                    );
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    console.log(profileImg)
-                    setCoverImg(result);
-                    setModalContent(
-                        <CoverImgModal 
-                            setModalContent={setModalContent} 
-                            userObj={userObj}
-                            setModalNum={setModalNum}
-                            profileImg={profileImg}
-                            coverImg={result}
-                            setProfileImg={setProfileImg} setCoverImg={setCoverImg}
-                        />
-                    );
-                    break;
-                case 4: 
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if(theFile !== undefined)
-            reader.readAsDataURL(theFile);
-    }
 
     const setProfileModal = (img) =>{
         setProfileImg(img);
@@ -76,6 +26,7 @@ const ProfileEdit = ({userObj}) => {
                 setModalNum={setModalNum}
                 profileImg={img}
                 coverImg={coverImg}
+                openModal={openModal}
                 setProfileImg={setProfileImg} setCoverImg={setCoverImg}
             />
         );
@@ -86,10 +37,16 @@ const ProfileEdit = ({userObj}) => {
         setModalNum(isModal ? 0 : 1);
     }
 
-    const onRequestClose = () => {
+    const onRequestClose = async () => {
         openModal(); 
         setModalNum(0);
         setProfileModal("");
+
+        const downURL = 'https://firebasestorage.googleapis.com/v0/b/nwitter-58cb4.appspot.com/o/TdD3CTbWVdUSLWya91csjNVZdWJ3%2F29d19292-1a9d-4ec2-9964-ee6ca07e32bd?alt=media&token=fc249db2-e1f4-471d-a9b5-dd06e689b920';
+        firebaseDB.ref().child('/users/LSKNYM5cFZbU1eN7E12O').update({
+            photoURL: downURL,
+            coverURL: downURL
+        });
     }
 
     useEffect( () => {
@@ -105,8 +62,6 @@ const ProfileEdit = ({userObj}) => {
                 <div className="profile_container base">
                     <form>
                         <button className="edit_profile" onClick={openModal}>Set up profile</button>
-                        
-                        <input id="cover-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
                     </form>
                     <img src={userObj.photoURL} 
                         alt="profile_image" /> 
