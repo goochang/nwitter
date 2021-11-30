@@ -1,12 +1,11 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CoverImgModal from "./CoverImgModal";
-import ProfileImgModal from "./ProfileImgModal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
+const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal, prevCover}) => {
 
     const [crop, setCrop] = useState({
         unit: "px",
@@ -21,34 +20,26 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
     const [croppedImageUrl, setCroppedImageUrl] = useState("");
     const [fileUrl, setFileUrl] = useState("");
 
-    const [imgForm, setImgForm] = useState(0);
-
     const onImageLoaded = (image) => {
         imageRef.current = image;
     };
 
-    const onChange = (_crop, percent_crop) => {
+    const onChange = (_crop) => {
         setCrop(_crop);
         console.log(_crop)
         if(imageRef.current !== null) {
-            const h = imageRef.current.clientHeight;
-            const w = imageRef.current.clientWidth;
-            
-            // if(_crop.y > h-450) _crop.y = h-450;
             const y_val = (_crop.y - 25) + "px";
             imageRef.current.style.bottom = y_val;
         }  
     }
 
-    const onCropComplete = (crop, percent_crop) => {
+    const onCropComplete = (crop) => {
         setCompletedCrop(crop)
         makeClineCrop(crop);        
     }
 
     const makeClineCrop = async (crop)  =>{
         if (imageRef && crop.width && crop.height) {
-            // getCroppedImg() 메서드 호출한 결과값을
-            // state에 반영합니다.
             const croppedImageUrl = await getCroppedImg();
             setCroppedImageUrl(croppedImageUrl);
             setProfileImg(croppedImageUrl);
@@ -59,10 +50,6 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
         if (!completedCrop || !previewCanvasRef.current || !imageRef.current) {
             return;
         }
-
-        const h = imageRef.current.clientHeight;
-        const w = imageRef.current.clientWidth;
-
         const image = imageRef.current;
         const canvas = previewCanvasRef.current;
     
@@ -96,9 +83,8 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
             canvas.toBlob(
                 (blob) => {
                     if (!blob) {
-                    //reject(new Error('Canvas is empty'));
-                    console.error('Canvas is empty');
-                    return;
+                        console.error('Canvas is empty');
+                        return;
                     }
                     blob.name = "newFile.jpeg";
                     window.URL.revokeObjectURL(fileUrl);
@@ -122,7 +108,7 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                             userObj={userObj}
                             setModalNum={setModalNum}
                             profileImg={profileImg}
-                            coverImg={coverImg}
+                            coverImg={prevCover}
                             openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                     />);
@@ -156,9 +142,9 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                     crop={crop}
                     ruleOfThirds
                     onImageLoaded={(i) => onImageLoaded(i)}
-                    onChange={(c, pc) => onChange(c, pc)}
+                    onChange={(c, pc) => onChange(c)}
                     onCropChange
-                    onComplete={(c, pc) => onCropComplete(c, pc)}
+                    onComplete={(c, pc) => onCropComplete(c)}
                     locked={true}
                     className="cover_crop"
                 />
@@ -167,7 +153,6 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                     <div>
                     <canvas
                       ref={previewCanvasRef}
-                      // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
                       style={{
                         width: Math.round(completedCrop?.width ?? 0),
                         height: Math.round(completedCrop?.height ?? 0)
@@ -175,9 +160,6 @@ const CoverImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, c
                     />
                   </div>
                 )}
-                {/* {croppedImageUrl && (
-                <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-                )} */}
             </div>
         </div>
     )

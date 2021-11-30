@@ -5,6 +5,7 @@ import CoverImgModal from "./CoverImgModal";
 import ProfileImgEditModal from "./ProfileImgEditModal";
 
 const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
+
     const onFileChange = (event) => {
         const { target: {files}, } = event;
         const theFile = files[0];
@@ -12,6 +13,7 @@ const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, cov
         const reader = new FileReader();
         reader.onloadend = (finishedEvent) => {
             const { currentTarget : {result }, } = finishedEvent;
+            const prevProfile = profileImg;
 
             setProfileImg(result);
             setModalContent(
@@ -21,6 +23,7 @@ const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, cov
                     setModalNum={setModalNum}
                     profileImg={result}
                     coverImg={coverImg}
+                    prevProfile={prevProfile}
                     setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                 />
             );

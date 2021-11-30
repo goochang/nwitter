@@ -6,7 +6,7 @@ import LeftMenu from './LeftMenu';
 import Navigation from './Navigation';
 import Side from './Side';
 
-const AppRouter = ({userObj, refreshUser}) => {
+const AppRouter = ({userObj, refreshUser, setUserObj}) => {
     return (
         <Router>
             <main>
@@ -19,7 +19,7 @@ const AppRouter = ({userObj, refreshUser}) => {
                             <Route exact path="/" 
                             render={()=> <Home userObj={userObj} /> }/>
                             <Route path="/profile" 
-                            render={()=> <Profile userObj={userObj} refreshUser={refreshUser} />}/>
+                            render={()=> <Profile userObj={userObj} refreshUser={refreshUser} setUserObj={setUserObj} />}/>
                             <Route path="/login" 
                             render={()=> <Auth userObj={userObj} /> } />
                         </div>

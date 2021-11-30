@@ -1,13 +1,10 @@
-import { firebaseDB } from 'fbase';
-import CoverImgModal from 'Modal/CoverImgModal';
-import ProfileImgEditModal from 'Modal/ProfileImgEditModal';
 import ProfileImgModal from 'Modal/ProfileImgModal';
 import moment from 'moment';
 import 'moment/locale/ko';
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
-const ProfileEdit = ({userObj}) => {
+const ProfileEdit = ({userObj, cover}) => {
     const timestamp = userObj.timestamp;
 
     const [profileImg, setProfileImg] = useState("");
@@ -18,6 +15,7 @@ const ProfileEdit = ({userObj}) => {
     const [modalContent, setModalContent] = useState(null);
 
     const setProfileModal = (img) =>{
+        console.log(coverImg)
         setProfileImg(img);
         setModalContent(
             <ProfileImgModal
@@ -25,7 +23,7 @@ const ProfileEdit = ({userObj}) => {
                 userObj={userObj}
                 setModalNum={setModalNum}
                 profileImg={img}
-                coverImg={coverImg}
+                coverImg={cover}
                 openModal={openModal}
                 setProfileImg={setProfileImg} setCoverImg={setCoverImg}
             />
@@ -33,6 +31,9 @@ const ProfileEdit = ({userObj}) => {
     }
 
     const openModal = () => {
+        console.log(isModal)
+        if(!isModal)
+            setProfileModal(profileImg)
         setIsModal(!isModal);
         setModalNum(isModal ? 0 : 1);
     }
@@ -40,24 +41,17 @@ const ProfileEdit = ({userObj}) => {
     const onRequestClose = async () => {
         openModal(); 
         setModalNum(0);
-        setProfileModal("");
-
-        const downURL = 'https://firebasestorage.googleapis.com/v0/b/nwitter-58cb4.appspot.com/o/TdD3CTbWVdUSLWya91csjNVZdWJ3%2F29d19292-1a9d-4ec2-9964-ee6ca07e32bd?alt=media&token=fc249db2-e1f4-471d-a9b5-dd06e689b920';
-        firebaseDB.ref().child('/users/LSKNYM5cFZbU1eN7E12O').update({
-            photoURL: downURL,
-            coverURL: downURL
-        });
+        setProfileModal("");        
     }
-
-    useEffect( () => {
-        setProfileModal(profileImg);
-        console.log(profileImg)
-    },[])
 
     return (
         <>
             <div className="profileEdit_container base">
                 <div className="cover_image base">
+                    {
+                        cover !== "" && <img src={cover} 
+                        alt="cover_image" /> 
+                    }
                 </div>
                 <div className="profile_container base">
                     <form>
@@ -82,7 +76,6 @@ const ProfileEdit = ({userObj}) => {
                     onRequestClose={()=> onRequestClose() }
                     isOpen={isModal}
                     ariaHideApp={false}
-                    // contentLabel="Minimal Modal Example"
                     appElement={document.getElementById('app')}
                     className="setProfileModal base"
                 >

@@ -4,10 +4,9 @@ import CoverImgModal from "./CoverImgModal";
 import ProfileImgModal from "./ProfileImgModal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
-
+const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal, prevProfile}) => {
     const [crop, setCrop] = useState({
         unit: "px",
         width: 500,
@@ -74,8 +73,6 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
 
     const makeClineCrop = async (crop)  =>{
         if (imageRef && crop.width && crop.height) {
-            // getCroppedImg() 메서드 호출한 결과값을
-            // state에 반영합니다.
             const croppedImageUrl = await getCroppedImg();
             setCroppedImageUrl(croppedImageUrl);
             setProfileImg(croppedImageUrl);
@@ -171,7 +168,7 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                             setModalContent={setModalContent} 
                             userObj={userObj}
                             setModalNum={setModalNum}
-                            profileImg={profileImg}
+                            profileImg={prevProfile}
                             coverImg={coverImg}
                             openModal={openModal}
                             setProfileImg={setProfileImg} setCoverImg={setCoverImg}
@@ -200,7 +197,6 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
 
             <div className="img_preview base center ">
                 {profileImg && (
-                
                 <ReactCrop
                     src={profileImg}
                     crop={crop}
@@ -217,7 +213,6 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                     <div>
                     <canvas
                       ref={previewCanvasRef}
-                      // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
                       style={{
                         width: Math.round(completedCrop?.width ?? 0),
                         height: Math.round(completedCrop?.height ?? 0)
@@ -225,9 +220,6 @@ const ProfileImgEditModal = ({setModalContent, userObj, setModalNum, profileImg,
                     />
                   </div>
                 )}
-                {/* {croppedImageUrl && (
-                <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-                )} */}
             </div>
         </div>
     )

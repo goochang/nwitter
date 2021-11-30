@@ -11,7 +11,6 @@ function App() {
   const setUserData = (user) => {
     const email = user.email;
     const userId = email.indexOf("@") !== -1 ? "@" + email.split("@")[0] : "";
-
     setUserObj({
       uid: user.uid,
       userId: userId,
@@ -19,7 +18,7 @@ function App() {
       email: user.email ? user.email : "",
       updateProfile: (args) => user.updateProfile(args),
       photoURL: user.photoURL !== null ? user.photoURL  : PImg,
-      cover: user.coverURL ? user.coverURL : "",
+      coverURL: user.coverURL !== "" ? user.coverURL  : "",
       timestamp: user.metadata.creationTime
     });
   }
@@ -35,22 +34,21 @@ function App() {
       displayName: user.providerData[0].displayName ? user.providerData[0].displayName : user.email,
       email: user.email ? user.email : "",
       photoURL: user.photoURL ? user.photoURL : "",
-      cover: user.coverURL ? user.coverURL : "",
+      coverURL: user.coverURL ? user.coverURL : "",
       timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
     });
   }
 
-  useEffect(()=>{
-    const getUser = async (user) => {
-      const users = await dbService.collection("users")
-      .where("email", "==", user.email)
-      .get();
-  
-      if(users.size === 0){
+  const getUser = async (user) => {
+    const users = await dbService.collection("users")
+    .where("email", "==", user.email)
+    .get();
+    if(users.size === 0){
         addUser(user);
-      }
-    }
+    } 
+  }
 
+  useEffect(()=>{
     authService.onAuthStateChanged((user)=>{
       if(user){
         setUserData(user)
@@ -60,14 +58,14 @@ function App() {
       }
       setInit(true);
     })
-  },[])
+  },[]);
 
   return (
     <>
       { init ? 
       <AppRouter 
       isLoggedIn={Boolean(userObj)} 
-      userObj={userObj} 
+      userObj={userObj}
       refreshUser={refreshUser} /> 
       : "initializing..." }
     </>

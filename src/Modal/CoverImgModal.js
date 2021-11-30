@@ -1,13 +1,14 @@
 import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dbService, firebaseDB, storageService } from "fbase";
+import { dbService, storageService } from "fbase";
+import { useHistory } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import CoverImgEditModal from "./CoverImgEditModal";
 import ProfileImgModal from "./ProfileImgModal";
 
 
 const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, coverImg, setProfileImg, setCoverImg, openModal}) => {
-
+    const history = useHistory();
     const onFileChange = (event) => {
         const { target: {files}, } = event;
         const theFile = files[0];
@@ -15,8 +16,8 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
         const reader = new FileReader();
         reader.onloadend = (finishedEvent) => {
             const { currentTarget : {result }, } = finishedEvent;
-
-            setProfileImg(result);
+            const prevCover = coverImg;
+            setCoverImg(result);
             setModalContent(
                 <CoverImgEditModal
                     setModalContent={setModalContent} 
@@ -24,6 +25,7 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
                     setModalNum={setModalNum}
                     profileImg={profileImg}
                     coverImg={result}
+                    prevCover={prevCover}
                     openModal={openModal}
                     setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                 />
@@ -37,45 +39,46 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
     const uploadToStorage = async (isProfile, imageURL, ref) => {
         await getFileBlob(imageURL, ref, blob =>{
             ref.put(blob).then(async function(snapshot) {
-                // console.log(imageURL);
+
                const downURL = await snapshot.ref.getDownloadURL();
-            //    console.log(downURL);
+
                if(isProfile){   
                    console.log("profile")
                     await userObj.updateProfile({
                         photoURL: downURL
                     });
+
                     const users = await dbService.collection("users")
                     .where("uid", "==", userObj.uid).get();
                     
-                    users.forEach((user) => {
-                        // console.log(firebaseDB.ref(`users/${user.id}`))
-                        // await firebaseDB.ref(`users/${user.id}`).update({
-                        //     coverURL: downURL
-                        // })
-                        console.log(user.id)
-                        console.log(downURL)
-                        firebaseDB.ref().child('/users/' + user.id).update({
+                    users.forEach(async (user) => {
+                        await dbService.collection("users").doc(user.id)
+                        .update({
                             photoURL: downURL
+                        }).then(function(){
+                            history.go(0);   
                         });
-                    })
-
-                    // console.log(await dbService.collection("users").where("uid", "==", userObj.uid).get())
+                    });
                 } else {
                     console.log("cover")
                     await userObj.updateProfile({
-                        coverURL: downURL
+                        coverURL: downURL,
+                        ...userObj
                     });
 
                     const users = await dbService.collection("users")
                     .where("uid", "==", userObj.uid).get();
-
-                    users.forEach((user) => {
-                        console.log(user.id)
-                        firebaseDB.ref().child('/users/' + user.id).update({
+                    
+                    users.forEach(async (user) => {
+                        await dbService.collection("users").doc(user.id)
+                        .update({
                             coverURL: downURL
+                        }).then(function(){
+                            if(profileImg === ""){
+                                history.go(0);   
+                            }
                         });
-                    })
+                    });
                 }
             });
         })
@@ -98,16 +101,14 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
             const attachmentRef =  storageService
             .ref()
             .child(`${userObj.uid}/profile/${uuidv4()}`);
-            console.log(profileImg)
             await uploadToStorage(true, profileImg, attachmentRef);
         }
         if(coverImg !== ""){
             const attachmentRef =  storageService
             .ref()
             .child(`${userObj.uid}/cover/${uuidv4()}`);
-            console.log(coverImg)
             await uploadToStorage(false, coverImg, attachmentRef);
-        }
+        }     
     }
 
     return (
