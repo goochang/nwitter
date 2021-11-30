@@ -4,10 +4,11 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faCog, faHome, faHashtag, faUser } from "@fortawesome/free-solid-svg-icons";
 import { authService } from "fbase";
 
-const LeftMenu = (userObj) => {
+const LeftMenu = ({userObj, logout}) => {
     const history = useHistory();
     
     const onLogoutClick = () => {
+        logout();
         authService.signOut();
         history.push("/");
     }
@@ -22,6 +23,7 @@ const LeftMenu = (userObj) => {
                             <FontAwesomeIcon icon={faTwitter} color={"rgb(217, 217, 217)"} size="2x" />
                             </div>
                         </Link>
+                        { !userObj && (
                         <Link to="/login">
                             <div className="header_content">
                             <FontAwesomeIcon icon={faHome} color={"rgb(217, 217, 217)"} size="2x" />
@@ -30,6 +32,7 @@ const LeftMenu = (userObj) => {
                             </span>
                             </div>
                         </Link>
+                        )}
                         <Link to="/explore">
                             <div className="header_content">
                             <FontAwesomeIcon icon={faHashtag} color={"rgb(217, 217, 217)"} size="2x" />

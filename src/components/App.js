@@ -27,6 +27,9 @@ function App() {
     const user=  authService.currentUser;
     setUserData(user)
   }
+  const logout = () => {
+    setUserObj(false);
+  }
   
   const addUser = async (user) => {
     await dbService.collection("users").add({
@@ -65,7 +68,7 @@ function App() {
       { init ? 
       <AppRouter 
       isLoggedIn={Boolean(userObj)} 
-      userObj={userObj}
+      userObj={userObj} logout={logout}
       refreshUser={refreshUser} /> 
       : "initializing..." }
     </>

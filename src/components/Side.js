@@ -1,15 +1,24 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useHistory } from "react-router";
 
 
 const Side = (userObj) => {
     const [sValue, setSValue] = useState("")
     const [isFocus, setIsFocus] = useState(false)
 
+    const history = useHistory();
+
     const onChange = (event) => {
         const { target: {value} } = event;
         setSValue(value)
+    }
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+
+        history.push('/search/' + sValue );
     }
     return (
         <div className="side base">
@@ -19,10 +28,11 @@ const Side = (userObj) => {
                         <FontAwesomeIcon icon={faSearch} color={"rgb(217, 217, 217)"} size="1x" />
                     </div>
                     <div>
-                        <input type="text" value={sValue} onChange={onChange} className="searchInput" 
-                        placeholder="Search Nwitter" autoComplete="false" id="sInput"
-                        onFocus={()=> {setIsFocus(true)}} onBlur={()=> {setIsFocus(false)}}
-                        />
+                        <form onSubmit={onSubmit}>
+                            <input type="text" value={sValue} onChange={onChange} className="searchInput" 
+                            placeholder="Search Nwitter" autoComplete="false" id="sInput"
+                            onFocus={()=> {setIsFocus(true)}} onBlur={()=> {setIsFocus(false)}} />
+                        </form>
                     </div>
                 </label>
             </div>

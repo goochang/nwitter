@@ -1,4 +1,4 @@
-import { dbService, storageService } from "fbase";
+import { dbService, firebaseDB, storageService } from "fbase";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,8 +29,17 @@ const NweetFactory = ({userObj}) => {
             const response = await attachmentRef.putString(_attachment, "data_url");
             attachmentUrl = await response.ref.getDownloadURL();
         }
-        console.log(userObj)
-        await dbService.collection("nweets").add({
+
+        // await dbService.collection("nweets").add({
+        //     text:_nweet,
+        //     createdAt: Date.now(),
+        //     creatorId: userObj.uid,
+        //     creatorName: userObj.displayName,
+        //     creatorEmail: userObj.email,
+        //     attachmentUrl,
+        // });
+
+        const ref = firebaseDB.ref("/posts").push({
             text:_nweet,
             createdAt: Date.now(),
             creatorId: userObj.uid,
@@ -38,6 +47,7 @@ const NweetFactory = ({userObj}) => {
             creatorEmail: userObj.email,
             attachmentUrl,
         });
+
     }
 
     const onChange = (event) => {
