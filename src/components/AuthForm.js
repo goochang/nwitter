@@ -1,4 +1,4 @@
-import { authService } from "fbase";
+import { authService, firebaseDB } from "fbase";
 import { useState } from "react";
 import { useHistory } from "react-router";
 
@@ -26,8 +26,28 @@ const AuthForm = () => {
         try {
             let data;
             if(newAccount){
-                data = await authService.createUserWithEmailAndPassword(email, password);
+                data = await authService.createUserWithEmailAndPassword(email, password)
 
+                if(data.additionalUserInfo.isNewUser){
+                    const user = data.user;
+                    firebaseDB.ref('users')
+                    .orderByChild('email')
+                    .startAt(user.email)
+                    .endAt(user.email+"\uf8ff")
+                    .once('value', snapshot => {
+                        if(!snapshot.exists()){
+                            console.log("회원가입")
+                            firebaseDB.ref('users').push({
+                                uid:user.uid,
+                                displayName: user.displayName ? user.displayName : user.email,
+                                email: user.email ? user.email : "",
+                                photoURL: user.photoURL ? user.photoURL : "",
+                                coverURL: "",
+                                timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
+                            });
+                        }
+                    });
+                }
             } else {
                 data = await authService.signInWithEmailAndPassword(email, password);
             }

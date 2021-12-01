@@ -53,9 +53,10 @@ function App() {
 
   useEffect(()=>{
     authService.onAuthStateChanged((user)=>{
+      console.log(user)
       if(user){
         setUserData(user)
-        getUser(user);
+        // getUser(user);
       } else{
         setUserObj(false);
       }
