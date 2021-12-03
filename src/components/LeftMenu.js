@@ -10,7 +10,6 @@ const LeftMenu = ({userObj, logout}) => {
     const onLogoutClick = () => {
         logout();
         authService.signOut();
-        history.go(0);
     }
 
     return (

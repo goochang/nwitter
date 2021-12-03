@@ -4,7 +4,6 @@ import { dbService } from "fbase";
 import { useCallback, useEffect, useState } from "react";
 import { withRouter } from 'react-router-dom';
 
-
 const Profile = ({userObj, refreshUser}) => {
     const [nweets, setNweets] = useState([]);
     const [cover, setCover] = useState("");
@@ -38,7 +37,7 @@ const Profile = ({userObj, refreshUser}) => {
 
     useEffect(()=> {
         getMyNweets();
-        getCover();
+        // getCover();
     }, [getMyNweets, getCover]);
 
     return (

@@ -3,26 +3,28 @@ import AppRouter from "components/Router";
 import { authService } from "fbase";
 import { dbService } from "../fbase";
 import PImg from '../img/default_profile_normal.png';
+import { getUser, sendEmail } from "helpers/auth";
 
 function App() {
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
-  const setUserData = (user) => {
+  const setUserData = (user, _user) => {
     const email = user.email;
     const userId = email.indexOf("@") !== -1 ? "@" + email.split("@")[0] : "";
     setUserObj({
       uid: user.uid,
       userId: userId,
-      displayName: user.displayName ? user.displayName : user.email,
+      name: user.name ? user.name : "",
+      nickname: user.nickname ? user.nickname : userId,
       email: user.email ? user.email : "",
-      updateProfile: (args) => user.updateProfile(args),
+      introduce: user.introduce ? user.introduce : "",
       photoURL: user.photoURL !== null ? user.photoURL  : PImg,
       coverURL: user.coverURL !== "" ? user.coverURL  : "",
-      timestamp: user.metadata.creationTime
+      timestamp: user.timestamp,
+      updateProfile: (args) => _user.updateProfile(args)
     });
   }
-
   const refreshUser = () => {
     const user=  authService.currentUser;
     setUserData(user)
@@ -30,33 +32,12 @@ function App() {
   const logout = () => {
     setUserObj(false);
   }
-  
-  const addUser = async (user) => {
-    await dbService.collection("users").add({
-      uid:user.uid,
-      displayName: user.providerData[0].displayName ? user.providerData[0].displayName : user.email,
-      email: user.email ? user.email : "",
-      photoURL: user.photoURL ? user.photoURL : "",
-      coverURL: user.coverURL ? user.coverURL : "",
-      timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
-    });
-  }
-
-  const getUser = async (user) => {
-    const users = await dbService.collection("users")
-    .where("email", "==", user.email)
-    .get();
-    if(users.size === 0){
-        addUser(user);
-    } 
-  }
-
   useEffect(()=>{
     authService.onAuthStateChanged((user)=>{
       console.log(user)
       if(user){
-        setUserData(user)
-        // getUser(user);
+        // sendEmail();
+        getUser(user, setUserData)
       } else{
         setUserObj(false);
       }

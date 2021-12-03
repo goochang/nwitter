@@ -3,6 +3,7 @@ import Auth from 'routes/Auth';
 import Home from 'routes/Home';
 import Profile from 'routes/Profile';
 import Search from 'routes/Search';
+import Verify from 'routes/Verify';
 import LeftMenu from './LeftMenu';
 import Navigation from './Navigation';
 import Side from './Side';
@@ -25,6 +26,8 @@ const AppRouter = ({userObj, refreshUser, setUserObj, logout}) => {
                             render={()=> <Profile userObj={userObj} refreshUser={refreshUser} setUserObj={setUserObj} />}/>
                             <Route path="/login" 
                             render={()=> <Auth userObj={userObj} /> } />
+                            <Route path="/verify/:key1" 
+                            component={Verify} />
                             
                         </div>
                         <Side />

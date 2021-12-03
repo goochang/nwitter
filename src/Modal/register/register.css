@@ -1,0 +1,207 @@
+.rBase {
+    align-items: stretch;
+    border: 0 solid black;
+    box-sizing: border-box;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+    margin: 0;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0;
+    position: relative;
+    z-index: 0;
+}
+
+.rCenter {
+    justify-content: center;
+    align-items: center;
+}
+.register_modal  {
+    border-radius: 25px;
+    width: 600px;
+    height: 650px;
+    background-color: black;
+    border-radius: 10px;
+    padding: 15px 32px;
+    /* justify-content: center; */
+}
+.register_modal .leftBtn {
+    left: -20px;
+    position: absolute;
+}
+.register_modal .iconBtn {
+    background-color: black;
+    border: none;
+}
+
+.register_modal .text1{    
+    font-size: 23px;
+    font-weight: 500;
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+
+.register_modal .text2{    
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: rgb(110, 118, 125)
+}
+.register_modal .input_container {
+    /* flex-direction: row; */
+}
+.register_modal .input_container .input_wrap{
+    margin-top: 16px;
+    padding:12px 8px 8px 8px;
+    line-height: 24px;
+    width: 100%;
+}
+.register_modal .input_container label{
+    flex-direction: row;
+    border-color: rgb(47, 51, 54);
+    border-width: 2px;
+    border-style: solid;
+    line-height: 62px;
+    margin-bottom: 50px;
+    border-radius: 5px;
+    background-color: black;
+}
+.register_modal label.focus{
+    border-color: rgb(29, 155, 240);
+    border-width: 2px;
+}
+.register_modal label.error{
+    border-color: red;
+    border-width: 2px;
+}
+.register_modal label span.nCnt{
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    line-height: 25px
+}
+.register_modal label.focus span.nCnt, .register_modal label.yesValue span.nCnt{
+    display: block;
+}
+.register_modal label span.value{
+    font-size: 17px;
+    position: absolute;
+    left: 8px;
+    color: rgb(110, 118, 125);
+    user-select: none;
+}
+.register_modal label span.underInput {
+    position: absolute;
+    bottom: -25px;
+    line-height: 20px;
+    margin-left: 5px;
+}
+.register_modal label.error span.error{
+    color:red;
+}
+
+.register_modal label span.show_pass{
+    user-select: none;
+    color: rgb(29, 155, 240);
+}
+.register_modal label.focus span.value {
+    color: rgb(29, 155, 240);
+}
+.register_modal label.error span.value {
+    color: red;
+}
+.register_modal label.focus span.value, .register_modal label.yesValue span.value, .register_modal label span.introduce{
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    top: 10px;
+}
+
+.register_modal label input{
+    width: 100%;
+}
+.register_modal label.focus input, .register_modal label.yesValue input{
+
+}
+
+.register_modal .nextBtn {
+    border-radius: 25px;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.next_container {
+    opacity: 0.5;
+}
+.next_container.active {
+    opacity: 1;
+    
+}
+
+/* img */
+.pImgModal .img_preview {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 64px auto;
+    border:2px solid white;
+  }
+  
+.register_modal .img_preview img.main_img {
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.register_modal .img_preview .profile_img_back{
+    z-index: 2;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: gray;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+.register_modal .img_preview label{
+    position: absolute;
+    z-index: 2;
+}
+.pImgEditModal .img_preview{
+    width: 500px;
+    height: 450px;
+    border-radius: 0;
+    margin: 0 auto;
+    border: none;
+}
+
+.pImgEditModal .ReactCrop__image{
+    width: 100%;
+    z-index: 4;
+}
+.pImgEditModal .ReactCrop{
+    width: 100%;
+    z-index: 4;
+}
+
+.ReactCrop__crop-selection {
+    top: 10px !important;
+    z-index: 5;
+}
+
+.register_modal textarea {
+    background-color: black;
+    width: 100%;
+    border: none;
+    color: white;
+    outline: none;
+    max-width: 100%;
+    min-height: 100px;
+}

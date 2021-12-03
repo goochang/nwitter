@@ -1,7 +1,9 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService, firebaseDB } from "fbase";
-import { useState } from "react";
+import RegisterModal from "Modal/register/RegisterModal";
+import { useEffect, useState } from "react";
+import ReactModal from "react-modal";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -9,6 +11,10 @@ const Side = () => {
     const [sValue, setSValue] = useState("")
     const [isFocus, setIsFocus] = useState(false)
     const [nweets, setNweets] = useState([]);
+    const [isLogin, setIsLogin] = useState(false);
+
+    const [isModal, setIsModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
     const history = useHistory();
 
@@ -28,7 +34,6 @@ const Side = () => {
                 console.log(c.val()) 
                 setNweets(c.val());
             });      
-
         }
     }
 
@@ -37,6 +42,25 @@ const Side = () => {
 
         history.push('/search/' + sValue );
     }
+    const openModal = () => {
+        if(!isModal)
+            setModalContent(
+            <RegisterModal 
+                setModalContent={setModalContent} 
+                onRequestClose={onRequestClose}
+            />)
+        setIsModal(!isModal);
+    }
+
+    const onRequestClose = () => {
+        setIsModal(false);
+    }
+
+    useEffect(()=> {
+        authService.onAuthStateChanged((user)=>{
+            setIsLogin(user !== null)
+          })
+    },)
     return (
         <div className="side base">
             <div className={`base ${isFocus ? "focus search_container" : "search_container"}`}>
@@ -98,11 +122,31 @@ const Side = () => {
                 </nav>
             </div>
 
-            { authService.currentUser === null && (
-                <div>
-                    <span>트위터에 처음이세요?</span>
+            { !isLogin && (
+                <div className="goRegister base">
+                    <div className="t1">
+                        <span>트위터에 처음이세요?</span>
+                    </div>
+                    <div className="t2">
+                        <span>지금 가입해서 나에게 맞춤 설정된 타임라인을 만들어 보세요!</span>
+                    </div>
+                    <div className="t3">
+                        <button onClick={openModal}>가입하기</button>
+                    </div>
                 </div>
             )}
+
+            <ReactModal 
+                shouldCloseOnOverlayClick={true}
+                shouldCloseOnEsc={false}
+                onRequestClose={()=> onRequestClose() }
+                isOpen={isModal}
+                ariaHideApp={false}
+                appElement={document.getElementById('app')}
+                className="base"
+            >
+                {modalContent}
+            </ReactModal>
             
         </div>
     )

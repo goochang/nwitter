@@ -1,11 +1,14 @@
-import ProfileImgModal from 'Modal/ProfileImgModal';
+import ProfileImgModal from 'Modal/profile/ProfileImgModal';
 import moment from 'moment';
 import 'moment/locale/ko';
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
 const ProfileEdit = ({userObj, cover}) => {
-    const timestamp = userObj.timestamp;
+    const timestamp = userObj !== null ? userObj.timestamp : "";
+    const userId = userObj !== null ? userObj.userId : "";
+    const nickname = userObj !== null ? userObj.nickname : "";
+    const photoURL = userObj !== null ? userObj.photoURL : "";
 
     const [profileImg, setProfileImg] = useState("");
     const [coverImg, setCoverImg] = useState("");
@@ -15,7 +18,6 @@ const ProfileEdit = ({userObj, cover}) => {
     const [modalContent, setModalContent] = useState(null);
 
     const setProfileModal = (img) =>{
-        console.log(coverImg)
         setProfileImg(img);
         setModalContent(
             <ProfileImgModal
@@ -57,10 +59,10 @@ const ProfileEdit = ({userObj, cover}) => {
                     <form>
                         <button className="edit_profile" onClick={openModal}>Set up profile</button>
                     </form>
-                    <img src={userObj.photoURL} 
+                    <img src={photoURL} 
                         alt="profile_image" /> 
-                    <span className="profile_name">{userObj.displayName}</span>
-                    <span className="user_id">{userObj.userId}</span>
+                    <span className="profile_name">{nickname}</span>
+                    <span className="user_id">{userId}</span>
                     <span className="join_date">Joined {moment(timestamp).format('ll')}</span>
                     <div className="follow_wrap">
                         <span className="f_cnt">10</span>
