@@ -5,7 +5,7 @@ import AuthForm from "components/AuthForm";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 
-function Auth({userObj}) {
+function Auth({userObj, refreshUser}) {
     const history = useHistory();
 
     useEffect(()=> {
@@ -31,13 +31,16 @@ function Auth({userObj}) {
             .once('value', snapshot => {
                 if(!snapshot.exists()){
                     console.log("회원가입")
+                    refreshUser();
                     firebaseDB.ref('users').push({
                         uid:user.uid,
+                        timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
+                        name: user.displayName ? user.displayName : user.email,
                         displayName: user.displayName ? user.displayName : user.email,
                         email: user.email ? user.email : "",
+                        introduce: "",
                         photoURL: user.photoURL ? user.photoURL : "",
                         coverURL: "",
-                        timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
                     });
                 }
             });
@@ -53,7 +56,7 @@ function Auth({userObj}) {
             size="3x"
             style={{marginBottom: 30}} />
 
-            <AuthForm />
+            <AuthForm refreshUser={refreshUser}/>
 
             <div className="authBtns">
                 <button onClick={onSocialClick} name="google" className="authBtn">

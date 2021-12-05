@@ -25,7 +25,7 @@ const AppRouter = ({userObj, refreshUser, setUserObj, logout}) => {
                             <Route path="/profile" 
                             render={()=> <Profile userObj={userObj} refreshUser={refreshUser} setUserObj={setUserObj} />}/>
                             <Route path="/login" 
-                            render={()=> <Auth userObj={userObj} /> } />
+                            render={()=> <Auth userObj={userObj} refreshUser={refreshUser} /> } />
                             <Route path="/verify/:key1" 
                             component={Verify} />
                             

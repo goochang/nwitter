@@ -24,6 +24,7 @@ const ProfileImgModal = ({setModalContent, userObj, setModalNum, profileImg, cov
                     profileImg={result}
                     coverImg={coverImg}
                     prevProfile={prevProfile}
+                    openModal={openModal}
                     setProfileImg={setProfileImg} setCoverImg={setCoverImg}
                 />
             );

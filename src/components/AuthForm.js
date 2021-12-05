@@ -2,7 +2,7 @@ import { authService, firebaseDB } from "fbase";
 import { useState } from "react";
 import { useHistory } from "react-router";
 
-const AuthForm = () => {
+const AuthForm = ({refreshUser}) => {
     const [email, setEmail] = useState("");
     const [password, setPssword] = useState("");
     const [newAccount, setNewAccount] = useState(false);
@@ -37,6 +37,7 @@ const AuthForm = () => {
                     .once('value', snapshot => {
                         if(!snapshot.exists()){
                             console.log("회원가입")
+                            refreshUser();
                             firebaseDB.ref('users').push({
                                 uid:user.uid,
                                 displayName: user.displayName ? user.displayName : user.email,
@@ -49,9 +50,9 @@ const AuthForm = () => {
                     });
                 }
             } else {
-                data = await authService.signInWithEmailAndPassword(email, password);
+                await authService.signInWithEmailAndPassword(email, password);
             }
-            console.log(data);
+            
             history.push("/");
         } catch(error){
             setError(error.message);

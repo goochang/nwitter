@@ -1,6 +1,6 @@
 import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dbService, storageService } from "fbase";
+import { firebaseDB, storageService } from "fbase";
 import { useHistory } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import CoverImgEditModal from "./CoverImgEditModal";
@@ -47,37 +47,19 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
                     await userObj.updateProfile({
                         photoURL: downURL
                     });
-
-                    const users = await dbService.collection("users")
-                    .where("uid", "==", userObj.uid).get();
-                    
-                    users.forEach(async (user) => {
-                        await dbService.collection("users").doc(user.id)
-                        .update({
-                            photoURL: downURL
-                        }).then(function(){
-                            history.go(0);   
-                        });
+                    firebaseDB.ref('users/' + userObj.userId).update({
+                        photoURL: downURL  
+                    }).then(function(){
+                        history.go(0);
                     });
                 } else {
                     console.log("cover")
-                    await userObj.updateProfile({
-                        coverURL: downURL,
-                        ...userObj
-                    });
-
-                    const users = await dbService.collection("users")
-                    .where("uid", "==", userObj.uid).get();
-                    
-                    users.forEach(async (user) => {
-                        await dbService.collection("users").doc(user.id)
-                        .update({
-                            coverURL: downURL
-                        }).then(function(){
-                            if(profileImg === ""){
-                                history.go(0);   
-                            }
-                        });
+                    firebaseDB.ref('users/' + userObj.userId).update({
+                        coverURL: downURL  
+                    }).then(function(){
+                        if(profileImg === ""){
+                            history.go(0);
+                        }                        
                     });
                 }
             });
@@ -98,16 +80,25 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
         event.preventDefault();
 
         if(profileImg !== ""){
+            
             const attachmentRef =  storageService
-            .ref()
-            .child(`${userObj.uid}/profile/${uuidv4()}`);
-            await uploadToStorage(true, profileImg, attachmentRef);
+            .ref();
+
+            const startNum = userObj.coverURL.lastIndexOf('%2F')+5;
+            attachmentRef.child(`${userObj.uid}/profile/${userObj.photoURL.substr(startNum,36)}`).delete();
+
+            const uploadRef = attachmentRef.child(`${userObj.uid}/profile/${uuidv4()}`);
+            await uploadToStorage(true, profileImg, uploadRef);
         }
         if(coverImg !== ""){
             const attachmentRef =  storageService
-            .ref()
-            .child(`${userObj.uid}/cover/${uuidv4()}`);
-            await uploadToStorage(false, coverImg, attachmentRef);
+            .ref();
+            
+            const startNum = userObj.coverURL.lastIndexOf('%2F')+3;
+            attachmentRef.child(`${userObj.uid}/cover/${userObj.coverURL.substr(startNum,36)}`).delete();
+
+            const uploadRef = attachmentRef.child(`${userObj.uid}/cover/${uuidv4()}`);
+            await uploadToStorage(false, coverImg, uploadRef);
         }     
     }
 

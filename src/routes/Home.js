@@ -7,6 +7,7 @@ function Home({userObj}) {
   const [nweets, setNweets] = useState([]);
 
     useEffect( () =>{
+      console.log(userObj);
       dbService
       .collection("nweets")
       .orderBy("createdAt", "desc")
@@ -17,7 +18,7 @@ function Home({userObj}) {
         }));
         setNweets(newArray);
       })
-    }, []);
+    }, [userObj]);
 
   return (
     <div>

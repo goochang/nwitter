@@ -1,12 +1,11 @@
 import Nweet from "components/Nweet";
 import ProfileEdit from "components/ProfileEdit";
-import { dbService } from "fbase";
+import { dbService, firebaseDB } from "fbase";
 import { useCallback, useEffect, useState } from "react";
 import { withRouter } from 'react-router-dom';
 
 const Profile = ({userObj, refreshUser}) => {
     const [nweets, setNweets] = useState([]);
-    const [cover, setCover] = useState("");
 
     const getMyNweets = useCallback(async () => {
         if(userObj) {
@@ -23,26 +22,13 @@ const Profile = ({userObj, refreshUser}) => {
         }
     }, [userObj]);
 
-    const getCover = useCallback(async () => {
-        const users = await dbService.collection("users")
-        .where("email", "==", userObj.email)
-        .get();
-    
-        console.log("no cover")
-        users.forEach((user) => {
-            const _user = user.data();
-            setCover(_user.coverURL);
-        })
-    }, [userObj]);
-
     useEffect(()=> {
         getMyNweets();
-        // getCover();
-    }, [getMyNweets, getCover]);
+    }, [getMyNweets]);
 
     return (
         <div>
-            <ProfileEdit userObj={userObj} cover={cover} />
+            <ProfileEdit userObj={userObj} />
             
             <div>
                 {nweets.map((nweet) => (

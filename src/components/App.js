@@ -9,18 +9,16 @@ function App() {
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
-  const setUserData = (user, _user) => {
-    const email = user.email;
-    const userId = email.indexOf("@") !== -1 ? "@" + email.split("@")[0] : "";
+  const setUserData = (user, _user, user_id) => {
     setUserObj({
       uid: user.uid,
-      userId: userId,
+      userId: user_id,
       name: user.name ? user.name : "",
-      nickname: user.nickname ? user.nickname : userId,
+      displayName: user.displayName ? user.displayName : "",
       email: user.email ? user.email : "",
       introduce: user.introduce ? user.introduce : "",
       photoURL: user.photoURL !== null ? user.photoURL  : PImg,
-      coverURL: user.coverURL !== "" ? user.coverURL  : "",
+      coverURL: (user.coverURL !== "" || user.coverURL !== undefined) ? user.coverURL  : "",
       timestamp: user.timestamp,
       updateProfile: (args) => _user.updateProfile(args)
     });

@@ -40,7 +40,7 @@ export const getUser = async (_user, callback) => {
         if(snapshot.exists() && snapshot.numChildren() === 1){
             const users = snapshot.val();
             Object.keys(users).forEach((user) => {
-                callback(users[user], _user);
+                callback(users[user], _user, user);
               }
             )        
         }
@@ -63,9 +63,8 @@ export const EmailRegister = async user =>  {
                     uid: _user.uid,
                     timestamp : _user.metadata.creationTime ? _user.metadata.creationTime : "",
                     name: user.name ? user.name : "",
-                    nickname: user.nickname ? user.nickname : "",
+                    displayName: user.nickname ? user.nickname : "",
                     email: user.email ? user.email : "",
-                    password: user.password ? user.password : "",
                     introduce: user.introduce ? user.introduce : "",
                     photoURL: user.pImg ? user.pImg : "",
                     coverURL: "",

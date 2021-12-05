@@ -4,11 +4,12 @@ import 'moment/locale/ko';
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
-const ProfileEdit = ({userObj, cover}) => {
+const ProfileEdit = ({userObj}) => {
     const timestamp = userObj !== null ? userObj.timestamp : "";
     const userId = userObj !== null ? userObj.userId : "";
     const nickname = userObj !== null ? userObj.nickname : "";
     const photoURL = userObj !== null ? userObj.photoURL : "";
+    const coverURL = userObj !== null ? userObj.coverURL : "";
 
     const [profileImg, setProfileImg] = useState("");
     const [coverImg, setCoverImg] = useState("");
@@ -25,7 +26,7 @@ const ProfileEdit = ({userObj, cover}) => {
                 userObj={userObj}
                 setModalNum={setModalNum}
                 profileImg={img}
-                coverImg={cover}
+                coverImg={coverURL}
                 openModal={openModal}
                 setProfileImg={setProfileImg} setCoverImg={setCoverImg}
             />
@@ -51,7 +52,7 @@ const ProfileEdit = ({userObj, cover}) => {
             <div className="profileEdit_container base">
                 <div className="cover_image base">
                     {
-                        cover !== "" && <img src={cover} 
+                        coverURL !== "" && <img src={coverURL} 
                         alt="cover_image" /> 
                     }
                 </div>
