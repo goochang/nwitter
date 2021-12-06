@@ -30,15 +30,6 @@ const NweetFactory = ({userObj}) => {
             attachmentUrl = await response.ref.getDownloadURL();
         }
 
-        // await dbService.collection("nweets").add({
-        //     text:_nweet,
-        //     createdAt: Date.now(),
-        //     creatorId: userObj.uid,
-        //     creatorName: userObj.displayName,
-        //     creatorEmail: userObj.email,
-        //     attachmentUrl,
-        // });
-
         const ref = firebaseDB.ref("/posts").push({
             text:_nweet,
             createdAt: Date.now(),

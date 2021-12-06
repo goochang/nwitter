@@ -46,32 +46,3 @@ export const getUser = async (_user, callback) => {
         }
     });
 }
-
-export const EmailRegister = async user =>  {
-    const data = await authService.createUserWithEmailAndPassword(user.email, user.password)
-
-    if(data.additionalUserInfo.isNewUser){
-        const _user = data.user;
-        firebaseDB.ref('users')
-        .orderByChild('email')
-        .startAt(user.email)
-        .endAt(user.email+"\uf8ff")
-        .once('value', snapshot => {
-            if(!snapshot.exists()){
-                console.log("회원가입")
-                firebaseDB.ref('users').push({
-                    uid: _user.uid,
-                    timestamp : _user.metadata.creationTime ? _user.metadata.creationTime : "",
-                    name: user.name ? user.name : "",
-                    displayName: user.nickname ? user.nickname : "",
-                    email: user.email ? user.email : "",
-                    introduce: user.introduce ? user.introduce : "",
-                    photoURL: user.pImg ? user.pImg : "",
-                    coverURL: "",
-                }).then(function(){
-
-                });
-            }
-        });
-    }
-};

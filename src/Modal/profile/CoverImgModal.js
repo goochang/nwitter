@@ -84,9 +84,10 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
             const attachmentRef =  storageService
             .ref();
 
-            const startNum = userObj.coverURL.lastIndexOf('%2F')+5;
-            attachmentRef.child(`${userObj.uid}/profile/${userObj.photoURL.substr(startNum,36)}`).delete();
-
+            if(userObj.coverURL !== ""){
+                const startNum = userObj.photoURL.lastIndexOf('%2F')+3;
+                attachmentRef.child(`${userObj.uid}/profile/${userObj.photoURL.substr(startNum,36)}`).delete();
+            }
             const uploadRef = attachmentRef.child(`${userObj.uid}/profile/${uuidv4()}`);
             await uploadToStorage(true, profileImg, uploadRef);
         }
@@ -94,9 +95,10 @@ const CoverImgModal = ({setModalContent, userObj, setModalNum, profileImg, cover
             const attachmentRef =  storageService
             .ref();
             
-            const startNum = userObj.coverURL.lastIndexOf('%2F')+3;
-            attachmentRef.child(`${userObj.uid}/cover/${userObj.coverURL.substr(startNum,36)}`).delete();
-
+            if(userObj.coverURL !== ""){
+                const startNum = userObj.coverURL.lastIndexOf('%2F')+3;
+                attachmentRef.child(`${userObj.uid}/cover/${userObj.coverURL.substr(startNum,36)}`).delete();
+            }
             const uploadRef = attachmentRef.child(`${userObj.uid}/cover/${uuidv4()}`);
             await uploadToStorage(false, coverImg, uploadRef);
         }     

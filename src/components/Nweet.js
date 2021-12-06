@@ -1,4 +1,4 @@
-import { dbService, storageService} from "fbase";
+import { dbService, firebaseDB, storageService} from "fbase";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
@@ -35,13 +35,14 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
     }
 
     useEffect( () => {
-        const getUser = async () => {
-            const users = await dbService.collection("users").where("email", "==", nweetObj.creatorEmail).get();
-            users.forEach((user) => {
-                setCreator(user.data())
-            })
-        }
-        getUser();
+        firebaseDB.ref('users')
+        .orderByChild('uid')
+        .startAt(nweetObj.creatorId)
+        .endAt(nweetObj.creatorId+"\uf8ff")
+        .once('value', snapshot => {
+            const user = snapshot.val();
+            setCreator(user[Object.keys(user)[0]] );
+        });
     }, [nweetObj])
 
     const toggleEditing = () => setEditing( (prev) => !prev);

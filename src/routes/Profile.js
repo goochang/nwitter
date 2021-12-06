@@ -9,16 +9,15 @@ const Profile = ({userObj, refreshUser}) => {
 
     const getMyNweets = useCallback(async () => {
         if(userObj) {
-            await dbService.collection("nweets")
-            .where("creatorId", "==", userObj.uid)
-            .orderBy("createdAt", "asc")
-            .onSnapshot((snapshot) =>{
-                const newArray = snapshot.docs.map((document) => ({
-                  id: document.id,
-                  ...document.data(),
-                }));
-                setNweets(newArray);
-            });
+            const ref = firebaseDB.ref('posts');
+            ref
+            .orderByChild('creatorId')
+            .startAt(userObj.uid)
+            .endAt(userObj.uid+"\uf8ff")
+            .on('value', (snapshot) => {
+                console.log(snapshot.val()) 
+                setNweets(snapshot.val());
+            })
         }
     }, [userObj]);
 
@@ -29,13 +28,15 @@ const Profile = ({userObj, refreshUser}) => {
     return (
         <div>
             <ProfileEdit userObj={userObj} />
-            
             <div>
-                {nweets.map((nweet) => (
-                    <Nweet key={nweet.id} nweetObj={nweet} userObj={userObj}
-                    isOwner={nweet.creatorId === userObj.uid} />
-                )
-                )}
+                {
+                    nweets && Object.keys(nweets).map((nweet) => {
+                        return (<Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}
+                            isOwner={nweet.creatorId === userObj.uid} />
+                            )
+                        }
+                    )
+                }
             </div>
         </div>
     )

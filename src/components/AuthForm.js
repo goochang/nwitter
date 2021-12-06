@@ -51,14 +51,11 @@ const AuthForm = ({refreshUser}) => {
                 }
             } else {
                 await authService.signInWithEmailAndPassword(email, password);
-            }
-            
+            }   
             history.push("/");
         } catch(error){
             setError(error.message);
         }
-        
-
     }
 
     const toggleAccount = () => setNewAccount((prev) => !prev);
