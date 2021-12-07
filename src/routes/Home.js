@@ -19,14 +19,15 @@ function Home({userObj}) {
   return (
     <div>
       <NweetFactory userObj={userObj}  />
-      <div> 
-        {  
+      <div className={`base ${nweets ? "postList" : "noPostList"}`}> 
+        {
+          nweets ?
           Object.keys(nweets).map((nweet) => {
-            return (<Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}
-            // isOwner={nweet.creatorId === userObj.uid} 
-              />)
-            }
-          )
+            return (
+              <Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}/>
+            )
+          })
+          : <span>글이 없습니다</span>
         }
       </div>
     </div>

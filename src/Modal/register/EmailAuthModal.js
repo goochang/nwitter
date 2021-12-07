@@ -8,20 +8,13 @@ import IntroduceModal from "./IntroduceModal";
 import { v4 as uuidv4 } from "uuid";
 import "./register.css";
 
-const EmailAuthModal = ({setModalContent, onRequestClose, email, name, nickname, password, pImg, introduce}) => {
-    const [code, setCode] = useState("");
-    const [isFocus, setIsFocus] = useState(0)
-
-    const onChange = (event) => {
-        const { target } = event;
-        const { value } = target;
-        setCode(value);
-    }
+const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, name, nickname, password, pImg, introduce}) => {
     const goPrev = () => {
         setModalContent(
             <IntroduceModal
                 setModalContent={setModalContent}
                 onRequestClose={onRequestClose}
+                refreshUser={refreshUser}
                 name={name}
                 nickname={nickname}
                 email={email}
@@ -97,6 +90,7 @@ const EmailAuthModal = ({setModalContent, onRequestClose, email, name, nickname,
                     photoURL: downURL ? downURL : "",
                     coverURL: "",
                 }).then(function(){
+                    refreshUser();
                     sendEmail();
                 });
             }
@@ -108,32 +102,25 @@ const EmailAuthModal = ({setModalContent, onRequestClose, email, name, nickname,
         EmailRegister({email,name,nickname,password,pImg,introduce})
     }, [])
     return (
-        <div className="register_modal rBase">
+        <div className="register_modal rBase emailAuth">
             <div className="rBase rCenter">
                 <button className="leftBtn iconBtn" onClick={goPrev} >
                     <FontAwesomeIcon icon={faArrowLeft} color={"rgb(217, 217, 217)"} size="1x" />
                 </button>
                 <FontAwesomeIcon icon={faTwitter} color={"rgb(217, 217, 217)"} size="2x" />
             </div>
-            <div className="rBase">
+            <div className="rBase rCenter">
                 <span className="text1">
-                    코드를 보내 드렸습니다
+                    인증 메일이 발송되었습니다
                 </span>
             </div>
-            <div className="rBase">
+            <div className="rBase rCenter">
                 <span className="text2">
-                    {email} 인증을 위해 아래에 입력하세요.
+                    메일함에서({email}) 인증 메일을 확인 바랍니다
                 </span>
             </div>
             <div className="rBase input_container">
-                <label className={`rBase ${isFocus === 1 ? "focus" : ""}`}>
-                    <span className="value">확인 코드</span>
-                    <div className="input_wrap">
-                        <input type="text" value={code} onChange={onChange} className="inputName"
-                        autoComplete="off" id="inputName" onFocus={()=> {setIsFocus(1)}} onBlur={()=> {setIsFocus(0)}} />
-                    </div>
-                    <span className="underInput" onClick={sendEmail}>이메일 다시 받기</span>
-                </label>
+                <button className="underInput resendBtn" onClick={sendEmail}>인증 메일 재발송</button>
             </div>
         </div>
     )

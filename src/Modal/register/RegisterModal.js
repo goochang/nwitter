@@ -7,7 +7,7 @@ import { useState } from "react";
 import PasswordModal from "./PasswordModal";
 import "./register.css";
 
-const RegisterModal = ({setModalContent, onRequestClose, _email, _nickname, _name, password, pImg, introduce}) => {
+const RegisterModal = ({setModalContent, onRequestClose, refreshUser, _email, _nickname, _name, password, pImg, introduce}) => {
     const [name, setName] = useState(_name);
     const [nameCnt, setNameCnt] = useState(0);
     const [nameError, setNameError] = useState(false);
@@ -75,6 +75,7 @@ const RegisterModal = ({setModalContent, onRequestClose, _email, _nickname, _nam
                 <PasswordModal 
                 setModalContent={setModalContent}
                 onRequestClose={onRequestClose}
+                refreshUser={refreshUser}
                 name={name}
                 nickname={nickname}
                 email={email}

@@ -404,6 +404,14 @@ header .header_content span {
 .nweet__actions span:first-child {
   margin-right: 10px;
 }
+.noPostList{
+  text-align: center;
+  font-size: 20px;
+  padding: 15px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Auth */
 
@@ -889,3 +897,5 @@ header .header_content span {
 .verify span {
   padding: 20px;
 }
+
+

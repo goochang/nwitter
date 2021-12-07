@@ -5,7 +5,7 @@ function Verify({match}) {
   const uid = match.params.key1;
   const user = authService.currentUser;
 
-  const is_verfied = (user.uid === uid && user.emailVerified);
+  const is_verfied = ( user && user.uid === uid && user.emailVerified);
   console.log(user)
   return (
     <div className="verify base">

@@ -11,7 +11,7 @@ import PImg from '../../img/default_profile_normal.png';
 import PImgEditModal from "./PImgEditModal";
 import PasswordModal from "./PasswordModal";
 
-const PImgModal = ({setModalContent, onRequestClose, email, name, nickname, password, _pImg, introduce}) => {
+const PImgModal = ({setModalContent, onRequestClose, refreshUser, email, name, nickname, password, _pImg, introduce}) => {
     const [pImg, setPImg] = useState(_pImg);
 
     const onFileChange = (event) => {
@@ -50,6 +50,7 @@ const PImgModal = ({setModalContent, onRequestClose, email, name, nickname, pass
             <PasswordModal 
             setModalContent={setModalContent}
             onRequestClose={onRequestClose}
+            refreshUser={refreshUser}
             email={email}
             name={name}
             nickname={nickname}
@@ -65,6 +66,7 @@ const PImgModal = ({setModalContent, onRequestClose, email, name, nickname, pass
                 <IntroduceModal 
                 setModalContent={setModalContent}
                 onRequestClose={onRequestClose}
+                refreshUser={refreshUser}
                 name={name}
                 nickname={nickname}
                 email={email}

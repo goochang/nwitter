@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import PImg from '../img/default_profile_normal.png';
 
-const Side = () => {
-    const [sValue, setSValue] = useState("")
+const Side = ({refreshUser}) => {
+    const [searchValue, setSearchValue] = useState("")
     const [isFocus, setIsFocus] = useState(false)
-    const [nweets, setNweets] = useState([]);
+    const [users, setUsers] = useState([]);
     const [isLogin, setIsLogin] = useState(false);
 
     const [isModal, setIsModal] = useState(false);
@@ -21,26 +22,28 @@ const Side = () => {
     const onChange = (event) => {
         console.log("onchange")
         const { target: {value} } = event;
-        setSValue(value)
+        setSearchValue(value)
         
-        if(value !== "" && sValue !== value){
-            const ref = firebaseDB.ref('posts');
+        if(value !== "" && searchValue !== value){
+            const ref = firebaseDB.ref('users');
             ref
-            .orderByChild('text')
-            .startAt(sValue)
-            .endAt(sValue+"\uf8ff")
+            .orderByChild('displayName')
+            .startAt(value)
+            .endAt(value+"\uf8ff")
             .once('value')
             .then(c => {
                 console.log(c.val()) 
-                setNweets(c.val());
+                setUsers(c.val());
             });      
+        } else {
+            setUsers([])
         }
     }
 
     const onSubmit = (event) => {
         event.preventDefault();
 
-        history.push('/search/' + sValue );
+        history.push('/search/' + searchValue );
     }
     const openModal = () => {
         if(!isModal)
@@ -48,6 +51,7 @@ const Side = () => {
             <RegisterModal 
                 setModalContent={setModalContent} 
                 onRequestClose={onRequestClose}
+                refreshUser={refreshUser}
             />)
         setIsModal(!isModal);
     }
@@ -55,7 +59,11 @@ const Side = () => {
     const onRequestClose = () => {
         setIsModal(false);
     }
-
+    const handleMouseDown = (e) => {
+        console.log("h")
+        if(isFocus)
+            e.preventDefault()
+    }
     useEffect(()=> {
         authService.onAuthStateChanged((user)=>{
             setIsLogin(user !== null)
@@ -70,48 +78,36 @@ const Side = () => {
                     </div>
                     <div>
                         <form onSubmit={onSubmit}>
-                            <input type="text" value={sValue} onChange={onChange} className="searchInput" 
+                            <input type="text" value={searchValue} onChange={onChange} className="searchInput" 
                             placeholder="Search Nwitter" autoComplete="off" id="sInput"
-                            onFocus={()=> {setIsFocus(true)}} onBlur={()=> {setIsFocus(false)}} />
+                            onFocus={()=> {setIsFocus(true)}} onBlur={()=> {
+                                setIsFocus(false)
+                                console.log("blur")
+                                }} />
                         </form>
                     </div>
                 </label>
             </div>
             <div className={`base ${isFocus ? "focus searchResult" : "searchResult"}`}>
                 <nav>
-                    <Link to="/search/collet">
-                        <div className="base resultWrap">
-                            <img src="https://avatars.githubusercontent.com/u/15142890?v=4" alt="" />
-                            <div className="base">
-                                <span className="displayName">
-                                    코렛트
-                                </span>
-                                <span className="userID">
-                                    @collet0802
-                                </span>
-                                <span className="user_addi">
-                                    코언팔이
-                                </span>
-                            </div>
-                        </div>
-                    </Link>
-                    { isFocus &&
-                        Object.keys(nweets).map((nweet) => {
-                            const obj = nweets[nweet];
-                            console.log(obj)
+                    { isFocus && users !== null &&
+                        Object.keys(users).map((nweet) => {
+                            const user = users[nweet];
+                            console.log(user)
                             return(   
-                                <Link to="/search/collet">
+                                <Link to={`/search/${user.uid}`}
+                                onMouseDown={handleMouseDown}>
                                     <div className="base resultWrap">
-                                        <img src="https://avatars.githubusercontent.com/u/15142890?v=4" alt="" />
+                                        <img src={user.photoURL === "" ? PImg : user.photoURL } alt="" />
                                         <div className="base">
                                             <span className="displayName">
-                                                {obj.creatorName}
+                                                {user.displayName}
                                             </span>
                                             <span className="userID">
-                                                {obj.creatorEmail}
+                                                {user.email}
                                             </span>
                                             <span className="user_addi">
-                                                {obj.text}
+                                                {user.introduce}
                                             </span>
                                         </div>
                                     </div>

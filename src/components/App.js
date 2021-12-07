@@ -25,7 +25,7 @@ function App() {
   }
   const refreshUser = () => {
     const user=  authService.currentUser;
-    setUserData(user)
+    getUser(user, setUserData)
   }
   const logout = () => {
     setUserObj(false);

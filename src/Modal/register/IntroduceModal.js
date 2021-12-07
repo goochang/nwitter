@@ -8,7 +8,7 @@ import PImgModal from "./PImgModal";
 import "./register.css";
 import RegisterModal from "./RegisterModal";
 
-const IntroduceModal = ({setModalContent, onRequestClose, email, name, nickname, password, pImg, _introduce}) => {
+const IntroduceModal = ({setModalContent, onRequestClose, refreshUser, email, name, nickname, password, pImg, _introduce}) => {
     const [introduce, setIntroduce] = useState(_introduce);
     const [textCnt, setTextCnt] = useState(_introduce===undefined ? 0 :  _introduce.length);
 
@@ -32,6 +32,7 @@ const IntroduceModal = ({setModalContent, onRequestClose, email, name, nickname,
             <PImgModal 
             setModalContent={setModalContent}
             onRequestClose={onRequestClose}
+            refreshUser={refreshUser}
             email={email}
             name={name}
             nickname={nickname}
@@ -46,6 +47,7 @@ const IntroduceModal = ({setModalContent, onRequestClose, email, name, nickname,
             <EmailAuthModal 
             setModalContent={setModalContent}
             onRequestClose={onRequestClose}
+            refreshUser={refreshUser}
             name={name}
             nickname={nickname}
             email={email}

@@ -30,7 +30,7 @@ const AppRouter = ({userObj, refreshUser, setUserObj, logout}) => {
                             component={Verify} />
                             
                         </div>
-                        <Side />
+                        <Side refreshUser={refreshUser} />
                     </div>
                 </>
             </Switch>

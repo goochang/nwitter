@@ -8,7 +8,7 @@ import PImgModal from "./PImgModal";
 import "./register.css";
 import RegisterModal from "./RegisterModal";
 
-const PasswordModal = ({setModalContent, onRequestClose, email, name, nickname, _password, pImg, introduce}) => {
+const PasswordModal = ({setModalContent, onRequestClose, refreshUser, email, name, nickname, _password, pImg, introduce}) => {
     // useEffect( () => {
     //     console.log(email)
     // },)
@@ -50,6 +50,7 @@ const PasswordModal = ({setModalContent, onRequestClose, email, name, nickname, 
             <RegisterModal 
             setModalContent={setModalContent}
             onRequestClose={onRequestClose}
+            refreshUser={refreshUser}
             _email={email}
             _name={name}
             _nickname={nickname}
@@ -64,6 +65,8 @@ const PasswordModal = ({setModalContent, onRequestClose, email, name, nickname, 
             setModalContent(
                 <PImgModal 
                 setModalContent={setModalContent}
+                onRequestClose={onRequestClose}
+                refreshUser={refreshUser}
                 name={name}
                 nickname={nickname}
                 email={email}
