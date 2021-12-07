@@ -1,6 +1,7 @@
 import { withRouter } from "react-router";
 
-const Navigation = ({userObj}) => {
+const Navigation = ({userObj, location}) => {
+    console.log(location)
     
     const url = window.location.href.split("/");
     const path = url[url.length-1];
@@ -8,7 +9,7 @@ const Navigation = ({userObj}) => {
 
     return (
         <div className="main_nav base">
-            <span>{pathName !== "" ? pathName: "Home" }</span>
+            <span>{pathName !== "" ? (pathName.indexOf("verify") ? "Verify" : pathName): "Home" }</span>
         </div>
     )
 }
