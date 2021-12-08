@@ -227,6 +227,7 @@ header .header_content span {
   color: white;
   /* border: 1px solid #04aaff; */
   /* border-radius: 20px; */
+  width: 100%;
   font-weight: 500;
   font-size: 20px;
 }
@@ -318,7 +319,7 @@ header .header_content span {
 }
 
 .nweet {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   padding-top: 15px;
   width: 100%;
   max-width: 600px;
@@ -411,6 +412,33 @@ header .header_content span {
   height: 100px;
   justify-content: center;
   align-items: center;
+}
+
+.nweet_btn_wrap {
+  margin-top: 5px;
+  flex-direction: row;
+}
+
+.nweet_btn_wrap div{
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  margin-right: 50px;
+  color: rgb(110, 118, 125);
+  flex-direction: row;
+}
+.nweet_btn_wrap button{
+  background-color: black;
+  border: none;
+}
+.nweet_btn_wrap svg{
+  background-color: black;
+  color: rgb(110, 118, 125);
+  margin-right: 15px;
+}
+
+.nweet_btn_wrap .heart.active, .nweet_btn_wrap .heart.active svg{
+  color: rgb(249, 24, 128)
 }
 
 /* Auth */

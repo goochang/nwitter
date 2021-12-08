@@ -1,6 +1,7 @@
 import Nweet from "components/Nweet";
 import NweetFactory from "components/NweetFactory";
 import { dbService, firebaseDB } from "fbase";
+import { reverseObject } from "helpers/help";
 import React, { useEffect, useState } from "react";
 
 function Home({userObj}) {
@@ -10,9 +11,8 @@ function Home({userObj}) {
       const ref = firebaseDB.ref('posts');
       ref
       .orderByChild('createdAt')
-      .on('value', (snapshot) => {
-        console.log(snapshot.val()) 
-        setNweets(snapshot.val());
+      .on('value', (snapshot) => {        
+        setNweets(reverseObject(snapshot.val()));
       })
     }, []);
 
@@ -24,7 +24,7 @@ function Home({userObj}) {
           nweets ?
           Object.keys(nweets).map((nweet) => {
             return (
-              <Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}/>
+              <Nweet key={nweet} nweet_key={nweet} nweetObj={nweets[nweet]} userObj={userObj}/>
             )
           })
           : <span>글이 없습니다</span>

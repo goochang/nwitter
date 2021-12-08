@@ -32,7 +32,7 @@ const Profile = ({userObj, refreshUser}) => {
                 {
                     nweets && Object.keys(nweets).map((nweet) => {
                         return (<Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}
-                            isOwner={nweet.creatorId === userObj.uid} />
+                            isOwner={nweets[nweet].creatorId === userObj.uid} />
                             )
                         }
                     )

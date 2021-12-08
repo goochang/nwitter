@@ -46,7 +46,7 @@ const Search = ({match}) => {
         <div className="profile_container base">
             <img src={user.photoURL} 
                 alt="profile_image" /> 
-            <span className="profile_name">{user.nickname}</span>
+            <span className="profile_name">{user.displayName}</span>
             <span className="user_id">{user.email}</span>
             <span className="join_date">Joined {moment(user.timestamp).format('ll')}</span>
             <div className="follow_wrap">

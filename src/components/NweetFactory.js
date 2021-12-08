@@ -37,6 +37,7 @@ const NweetFactory = ({userObj}) => {
             creatorName: userObj.displayName,
             creatorEmail: userObj.email,
             attachmentUrl,
+            heartCnt: 0
         });
 
     }

@@ -1,14 +1,15 @@
 import { dbService, firebaseDB, storageService} from "fbase";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faTrash, faPencilAlt, faHeart as faHeart2} from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
 
-const Nweet = ({nweetObj, isOwner, userObj}) => {
+const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
     const [creator, setCreator] = useState(null)
-
+    const [isHeart, setIsHeart] = useState(false);
     
     const onDeleteClick = async () =>{
         const ok = window.confirm("삭제 ㄱ?");
@@ -35,6 +36,7 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
     }
 
     useEffect( () => {
+        console.log("nweet")
         firebaseDB.ref('users')
         .orderByChild('uid')
         .startAt(nweetObj.creatorId)
@@ -43,10 +45,47 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
             const user = snapshot.val();
             setCreator(user[Object.keys(user)[0]] );
         });
-    }, [nweetObj])
+
+        firebaseDB.ref('hearts')
+        .orderByChild('value')
+        .equalTo(userObj.uid+nweetObj.key)
+        .once('value', snapshot => {
+            if(snapshot.exists()){
+                const hearts = snapshot.val();
+                Object.keys(hearts).forEach((heart) => {
+                    setIsHeart(hearts[heart].isHeart)
+                })
+            }
+        });
+    }, [nweetObj, userObj])
 
     const toggleEditing = () => setEditing( (prev) => !prev);
-
+    const heartClick = () => {
+        console.log("heartClick")
+        firebaseDB.ref('hearts')
+        .orderByChild('value')
+        .equalTo(userObj.uid+nweetObj.key)
+        .once('value', snapshot => {
+            if(snapshot.exists()){ // 이미 누른적 있는경우
+                const hearts = snapshot.val();
+                Object.keys(hearts).forEach((heart) => {
+                    firebaseDB.ref('hearts/' + heart).update({
+                        isHeart: !hearts[heart].isHeart
+                    })
+                })                
+            } else {
+                firebaseDB.ref('hearts').push({
+                    value:userObj.uid + nweetObj.key,
+                    isHeart: true
+                });
+            }
+            const _heartCnt = isHeart ? nweetObj.heartCnt - 1 : nweetObj.heartCnt + 1;
+            firebaseDB.ref('posts/' + nweetObj.key).update({
+                heartCnt: _heartCnt
+            })
+            setIsHeart(!isHeart)
+        });        
+    }
     return (
         
         <div className="nweet">
@@ -81,7 +120,18 @@ const Nweet = ({nweetObj, isOwner, userObj}) => {
                                     <img src={nweetObj.attachmentUrl} alt="nweet_attachment" /> 
                                 )
                             }
-                        
+                            <div className="nweet_btn_wrap base">
+                                <div className={`base heart${isHeart ? " active" : ""}`}>
+                                    <button className="iconBtn" id="nweet_heart"
+                                    onClick={heartClick}>
+                                        { isHeart ? <FontAwesomeIcon icon={faHeart2} /> : <FontAwesomeIcon icon={faHeart} /> }
+                                    </button>
+                                    <label htmlFor="nweet_heart">{nweetObj.heartCnt}</label>
+                                </div>
+                                <div>
+                                    reply
+                                </div>
+                            </div>
                             {
                                 isOwner && (
                                     <div className="nweet__actions">
