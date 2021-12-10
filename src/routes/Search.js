@@ -1,38 +1,57 @@
 import Nweet from "components/Nweet";
-import NweetFactory from "components/NweetFactory";
-import { dbService, firebaseDB, firebaseInstance } from "fbase";
+import { firebaseDB,  } from "fbase";
+import { reverseObject } from "helpers/help";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { withRouter } from "react-router-dom";
 
-const Search = ({match}) => {
+const Search = withRouter(({match, userObj}) => {
   const [nweets, setNweets] = useState([]);
   const [user, setUser] = useState(null);
   const uid = match.params.key1;
 
-    useEffect( () =>{
-      console.log(uid)
-      const userRef = firebaseDB.ref('users');
-      userRef
-      .orderByChild('uid')
-      .startAt(uid)
-      .endAt(uid+"\uf8ff")
-      .once('value')
-      .then(c => {
-        const user = c.val()        
-        setUser(user[Object.keys(user)[0]] );
-      });      
+  const [ref, inView] = useInView()
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false)
+  
+  const getNweets = useCallback(async () => {
+    setLoading(true)
+    const ref = firebaseDB.ref('posts');
+    ref
+    .orderByChild('creatorId')
+    .startAt(uid)
+    .endAt(uid+"\uf8ff")
+    .limitToLast(10 * page)
+    .on('value', (snapshot) => {        
+      setNweets(reverseObject(snapshot.val()));
+    })
 
-      const postRef = firebaseDB.ref('posts');
-      postRef
-      .orderByChild('creatorId')
-      .startAt(uid)
-      .endAt(uid+"\uf8ff")
-      .once('value')
-      .then(c => {
-        console.log(c.val()) 
-        setNweets(c.val());
-      });      
-    }, [uid]);
+    setLoading(false);
+  }, [page, uid] );
+
+  useEffect(() => {
+    getNweets();
+  }, [getNweets]);
+
+  useEffect( () => {
+    if (inView && !loading) {
+      setPage(page => page + 1)
+    }
+  }, [inView, loading])
+
+  useEffect( () =>{
+    const userRef = firebaseDB.ref('users');
+    userRef
+    .orderByChild('uid')
+    .startAt(uid)
+    .endAt(uid+"\uf8ff")
+    .once('value')
+    .then(c => {
+      const user = c.val()        
+      setUser(user[Object.keys(user)[0]] );
+    });       
+  }, [uid]);
 
   return (
     <div className="profileEdit_container base">
@@ -59,15 +78,20 @@ const Search = ({match}) => {
         <div> 
         {  
           Object.keys(nweets).map((nweet) => {
-              return (<Nweet key={nweet} nweetObj={nweets[nweet]} />)
+              return (<Nweet key={nweet} nweetObj={nweets[nweet]} 
+                userObj={userObj} viewRef={(Object.keys(nweets).length -1) === parseInt(nweet) ? ref : null} />)
             }
           )
         }
         </div>
+        {
+          inView ? "로딩중 ": "맨끝임"
+        }
       </>
       )}
+
     </div>
   );
-}
+});
 
 export default Search;

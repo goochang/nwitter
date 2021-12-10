@@ -1,7 +1,9 @@
+import { firebaseDB } from "fbase";
+import { getUserByUid } from "helpers/auth";
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router";
 
-const Navigation = ({userObj, location}) => {
+const Navigation = withRouter(({match, location}) => {
     // home verify search
     const url = window.location.href.split("/");
     const path = url[url.length-1];
@@ -9,7 +11,13 @@ const Navigation = ({userObj, location}) => {
     
     useEffect( () => {
         if(url[4] === "search"){
-            setPathName("Search");
+            firebaseDB.ref('users')
+            .orderByChild('uid')
+            .equalTo(path)
+            .once('value').then(c => {
+                const user = c.val()        
+                setPathName(user[Object.keys(user)[0]].displayName );
+            });
         } else if(url[4] === "verify"){
             setPathName("Verify");
         } else {
@@ -23,6 +31,6 @@ const Navigation = ({userObj, location}) => {
             <span>{pathName !== "" ? (pathName.indexOf("verify") !== -1 ? "Verify" : pathName): "Home" }</span>
         </div>
     )
-}
+});
 
 export default withRouter(Navigation); 

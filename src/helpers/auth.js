@@ -46,3 +46,13 @@ export const getUser = async (_user, callback) => {
         }
     });
 }
+
+export const getUserByUid = async (uid) => {
+  firebaseDB.ref('users')
+  .orderByChild('uid')
+  .equalTo(uid)
+  .once('value').then(c => {
+    const user = c.val()        
+    return(user[Object.keys(user)[0]] );
+  });  
+}

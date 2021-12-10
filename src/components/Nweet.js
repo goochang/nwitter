@@ -4,8 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faTrash, faPencilAlt, faHeart as faHeart2} from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
+import Moment from 'react-moment';
 
-const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
+
+const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
     const [creator, setCreator] = useState(null)
@@ -36,7 +38,6 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
     }
 
     useEffect( () => {
-        console.log("nweet")
         firebaseDB.ref('users')
         .orderByChild('uid')
         .startAt(nweetObj.creatorId)
@@ -45,11 +46,11 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
             const user = snapshot.val();
             setCreator(user[Object.keys(user)[0]] );
         });
-
+        
         firebaseDB.ref('hearts')
         .orderByChild('value')
         .equalTo(userObj.uid+nweetObj.key)
-        .once('value', snapshot => {
+        .once('value', snapshot => {    
             if(snapshot.exists()){
                 const hearts = snapshot.val();
                 Object.keys(hearts).forEach((heart) => {
@@ -88,7 +89,7 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
     }
     return (
         
-        <div className="nweet">
+        <div className={`nweet ${viewRef ? "last" : "no"}`} ref={viewRef} >
             {editing ? (
                 <>
                 <form onSubmit={onSubmit} className="container nweetEdit">
@@ -109,8 +110,9 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj }) => {
                     </div>
                     <div className="nweet_content base">
                         { creator && 
-                        <div className="nweet_profile_name_container">
+                        <div className="nweet_profile_name_container base">
                             <span className="profile_displayName">{creator.displayName}</span>
+                            <Moment fromNow className="fromNow">{nweetObj.createdAt}</Moment>
                         </div>}
                         
                         <div className="nweet_content_box base">

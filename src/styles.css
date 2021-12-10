@@ -322,6 +322,7 @@ header .header_content span {
   margin-bottom: 5px;
   padding-top: 15px;
   width: 100%;
+  min-height: 97px;
   max-width: 600px;
   /* padding: 20px 20px 50px 79px; */
   position: relative;
@@ -342,6 +343,7 @@ header .header_content span {
 .nweet .nweet_profile {
   display: flex;
   flex-grow: 0;
+  min-width: 65px;
 }
 
 .nweet .nweet_content {
@@ -357,6 +359,9 @@ header .header_content span {
 
 .nweet .nweet_profile_name_container {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .nweet .nweet_content_box {
@@ -379,7 +384,6 @@ header .header_content span {
 .nweet .nweet_profile_name_container .profile_displayName {
   font-weight: bold;
   font-size: 16px;
-  margin-bottom: 5px;
 }
 
 .nweet img {
@@ -422,25 +426,37 @@ header .header_content span {
 .nweet_btn_wrap div{
   justify-content: center;
   align-items: center;
-  padding: 5px 10px;
+  padding: 5px 0;
   margin-right: 50px;
   color: rgb(110, 118, 125);
   flex-direction: row;
+  cursor: pointer;
 }
 .nweet_btn_wrap button{
   background-color: black;
   border: none;
+  cursor: pointer;
 }
 .nweet_btn_wrap svg{
   background-color: black;
   color: rgb(110, 118, 125);
   margin-right: 15px;
+  cursor: pointer;
+}
+.nweet_btn_wrap div.heart label{
+  cursor: pointer;
 }
 
 .nweet_btn_wrap .heart.active, .nweet_btn_wrap .heart.active svg{
   color: rgb(249, 24, 128)
 }
 
+time.fromNow {
+  margin-left: 10px;
+  line-height: 13px;
+  font-size: 13px;
+  color: rgb(110, 118, 125);
+}
 /* Auth */
 
 .authContainer {

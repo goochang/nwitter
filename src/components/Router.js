@@ -8,7 +8,7 @@ import LeftMenu from './LeftMenu';
 import Navigation from './Navigation';
 import Side from './Side';
 
-const AppRouter = ({userObj, refreshUser, setUserObj, logout}) => {
+const AppRouter = ({match, userObj, refreshUser, setUserObj, logout}) => {
     return (
         <Router>
             <main>
@@ -21,7 +21,7 @@ const AppRouter = ({userObj, refreshUser, setUserObj, logout}) => {
                             <Route exact path="/" 
                             render={()=> <Home userObj={userObj} /> }/>
                             <Route path="/search/:key1" 
-                            component={Search} />
+                            render={() => <Search userObj={userObj} />  } />
                             <Route path="/profile" 
                             render={()=> <Profile userObj={userObj} refreshUser={refreshUser} setUserObj={setUserObj} />}/>
                             <Route path="/login" 

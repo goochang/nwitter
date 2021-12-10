@@ -6,8 +6,8 @@ import ReactModal from 'react-modal';
 
 const ProfileEdit = ({userObj}) => {
     const timestamp = userObj !== null ? userObj.timestamp : "";
-    const userId = userObj !== null ? userObj.userId : "";
-    const nickname = userObj !== null ? userObj.nickname : "";
+    const email = userObj !== null ? userObj.email : "";
+    const displayName = userObj !== null ? userObj.displayName : "";
     const photoURL = userObj !== null ? userObj.photoURL : "";
     const coverURL = userObj !== null ? userObj.coverURL : "";
 
@@ -62,8 +62,8 @@ const ProfileEdit = ({userObj}) => {
                     </form>
                     <img src={photoURL} 
                         alt="profile_image" /> 
-                    <span className="profile_name">{nickname}</span>
-                    <span className="user_id">{userId}</span>
+                    <span className="profile_name">{displayName}</span>
+                    <span className="user_id">{email}</span>
                     <span className="join_date">Joined {moment(timestamp).format('ll')}</span>
                     <div className="follow_wrap">
                         <span className="f_cnt">10</span>
