@@ -18,6 +18,8 @@ const Navigation = withRouter(({match, location}) => {
                 const user = c.val()        
                 setPathName(user[Object.keys(user)[0]].displayName );
             });
+        } else if(url[4] === "nweet"){
+            setPathName("트윗")
         } else if(url[4] === "verify"){
             setPathName("Verify");
         } else {

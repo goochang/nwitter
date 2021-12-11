@@ -324,7 +324,6 @@ header .header_content span {
   width: 100%;
   min-height: 97px;
   max-width: 600px;
-  /* padding: 20px 20px 50px 79px; */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -371,9 +370,6 @@ header .header_content span {
   font-size: 15px;
 }
 .nweet .nweet_profile img {
-  /* left: 0px;
-  top: 0px;
-  position: absolute; */
   position: relative;
   border-radius: 50%;
   width:50px;
@@ -445,6 +441,7 @@ header .header_content span {
 }
 .nweet_btn_wrap div.heart label{
   cursor: pointer;
+  padding-right: 5px;
 }
 
 .nweet_btn_wrap .heart.active, .nweet_btn_wrap .heart.active svg{
@@ -942,4 +939,106 @@ time.fromNow {
   padding: 20px;
 }
 
+/* Detail */
+.nweet_detail {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  flex-direction: column;
+  color:white;
+  padding: 15px;
+}
+.nweet_detail .profile_displayName{
+  font-size: 17px;
+  line-height: 17px;
+  margin-bottom: 10px;
+}
+.nweet_detail span.email{
+  color:rgb(110, 118, 125);
+  font-size: 15px;
+}
+.nweet_profile{
+  flex-direction: row;
+}
+.profile_image {
+  margin-right: 15px;
+}
+.profile_image img, .nweet_comment .new_comment img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.profile_detail{
+  flex-grow: 1;
+}
 
+.bbg {
+  border-bottom: 1px solid rgb(47, 51, 54);
+}
+.nweet_content span.content_text {
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 28px;
+  margin-bottom: 10px;
+}
+.nweet_content img {
+  border-radius: 15px;
+  width: 100%;
+}
+
+.nweet_content .content_timestamp {
+  color:rgb(110, 118, 125);
+  font-size: 15px;
+  margin: 15px 0;
+}
+
+.nweet_cnt{
+  flex-direction: row;
+  padding: 25px 0;
+  align-items: center;
+}
+.nweet_cnt .cnt_title {
+  font-size: 17px;
+  margin-right: 5px;
+  font-weight: 500;
+}
+.nweet_cnt .cnt_value {
+  font-size: 15px;
+  margin-right: 25px;
+  color:rgb(110, 118, 125)
+}
+
+.nweet_btn {
+  padding: 15px 0;
+  flex-direction: row;
+  justify-content: center;
+}
+.nweet_btn svg {
+  color: rgb(110, 118, 125)
+}
+.nweet_btn div {
+  padding: 0 50px;
+}
+.new_comment{
+  margin: 15px 0;
+  flex-direction: row;
+}
+.new_comment .new_comment_inputText {
+  flex-grow: 1;
+  font-size: 23px;
+}
+.new_comment_profileImg img{
+  margin-right: 15px;
+}
+.new_comment_btn {
+  justify-content: center;
+}
+.new_comment_btn button{
+  border:none;
+  background-color:rgb(29,155, 240);
+  border-radius: 25px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 15px;
+}

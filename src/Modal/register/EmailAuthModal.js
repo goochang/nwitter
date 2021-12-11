@@ -3,7 +3,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService, firebaseDB, storageService } from "fbase";
 import { sendEmail } from "helpers/auth";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import IntroduceModal from "./IntroduceModal";
 import { v4 as uuidv4 } from "uuid";
 import "./register.css";
@@ -24,55 +24,7 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
             />
         )
     }
-    const uploadToStorage = async (user, ref) => {
-        await getFileBlob(pImg, ref, blob =>{
-            ref.put(blob).then(async function(snapshot) {
-               const downURL = await snapshot.ref.getDownloadURL();
-     
-                console.log("profile")
-                await user.updateProfile({
-                    photoURL: downURL
-                }).then(function(){
-                    addUser(user, downURL)
-                });
-    
-            });
-        })
-    }
-    
-    const getFileBlob = function (url,ref, cb) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.responseType = "blob";
-        xhr.addEventListener('load', function() {
-            console.log("load")
-            cb(xhr.response, ref);
-        });
-        xhr.send();
-    };
-
-    const profileUpdate = async () => {
-        const user = authService.currentUser;
-    
-        if(pImg !== ""){
-            const attachmentRef =  storageService
-            .ref();
-    
-            const uploadRef = attachmentRef.child(`${user.uid}/profile/${uuidv4()}`);
-            await uploadToStorage(user, uploadRef);
-        }
-    }
-
-    const EmailRegister = async user =>  {
-        
-        await authService.
-        createUserWithEmailAndPassword(user.email, user.password).
-        then(async function(){
-            await profileUpdate();
-        });
-    };
-
-    const addUser = (user, downURL) => {
+    const addUser =useCallback((user, downURL) => {
         firebaseDB.ref('users')
         .orderByChild('email')
         .startAt(user.email)
@@ -95,12 +47,57 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
                 });
             }
         });
-    }
+    }, [name, nickname, introduce, email, refreshUser]);
+
+    const uploadToStorage = useCallback(async (user, ref) => {
+        await getFileBlob(pImg, ref, blob =>{
+            ref.put(blob).then(async function(snapshot) {
+               const downURL = await snapshot.ref.getDownloadURL();
+     
+                console.log("profile")
+                await user.updateProfile({
+                    photoURL: downURL
+                }).then(function(){
+                    addUser(user, downURL)
+                });
+    
+            });
+        })
+    }, [addUser, pImg]);
+    
+    const getFileBlob = function (url,ref, cb) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.responseType = "blob";
+        xhr.addEventListener('load', function() {
+            console.log("load")
+            cb(xhr.response, ref);
+        });
+        xhr.send();
+    };
+
+    const profileUpdate = useCallback(async () => {
+        const user = authService.currentUser;
+    
+        if(pImg !== ""){
+            const attachmentRef =  storageService
+            .ref();
+    
+            const uploadRef = attachmentRef.child(`${user.uid}/profile/${uuidv4()}`);
+            await uploadToStorage(user, uploadRef);
+        }
+    },[pImg, uploadToStorage]);
+
+    const EmailRegister = useCallback(async user =>  {
+        await authService.createUserWithEmailAndPassword(user.email, user.password).then(async function(){
+            await profileUpdate();
+        });
+    }, [profileUpdate]);
+
     useEffect(()=> {
-        console.log("emailPage")
-        //회원가입하고
-        EmailRegister({email,name,nickname,password,pImg,introduce})
-    }, [])
+        // usecallback 다수추가해서 테스트필요
+        EmailRegister()
+    }, [EmailRegister])
     return (
         <div className="register_modal rBase emailAuth">
             <div className="rBase rCenter">

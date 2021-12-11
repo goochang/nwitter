@@ -1,5 +1,6 @@
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Auth from 'routes/Auth';
+import Detail from 'routes/Detail';
 import Home from 'routes/Home';
 import Profile from 'routes/Profile';
 import Search from 'routes/Search';
@@ -22,6 +23,8 @@ const AppRouter = ({match, userObj, refreshUser, setUserObj, logout}) => {
                             render={()=> <Home userObj={userObj} /> }/>
                             <Route path="/search/:key1" 
                             render={() => <Search userObj={userObj} />  } />
+                            <Route path="/nweet/:key1" 
+                            render={() => <Detail userObj={userObj} />  } />
                             <Route path="/profile" 
                             render={()=> <Profile userObj={userObj} refreshUser={refreshUser} setUserObj={setUserObj} />}/>
                             <Route path="/login" 
