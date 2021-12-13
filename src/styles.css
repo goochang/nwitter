@@ -128,13 +128,22 @@ main header {
   height: 53px;
   align-items: left;
   justify-content: center;
+  flex-direction: row;
+  align-items: center;
 }
-
+.main_nav button {
+  width: 56px;
+  height: 45px;
+  background-color: black;
+}
+.main_nav svg {
+  color: white;
+}
 .main_nav span {
+  flex-grow: 1;
   margin-left: 15px;
   font-size: 20px;
 }
-
 .header_main {
   display: flex;
   width: 275px;

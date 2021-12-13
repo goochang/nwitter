@@ -2,12 +2,16 @@ import { firebaseDB } from "fbase";
 import { getUserByUid } from "helpers/auth";
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useHistory } from "react-router";
 
 const Navigation = withRouter(({match, location}) => {
     // home verify search
     const url = window.location.href.split("/");
     const path = url[url.length-1];
     const [pathName, setPathName] = useState("");
+    const history = useHistory();
     
     useEffect( () => {
         if(url[4] === "search"){
@@ -30,7 +34,10 @@ const Navigation = withRouter(({match, location}) => {
 
     return (
         <div className="main_nav base">
-            <span>{pathName !== "" ? (pathName.indexOf("verify") !== -1 ? "Verify" : pathName): "Home" }</span>
+            { (url && url[4] === "nweet") &&
+            <button onClick={()=>{history.goBack()}} className="iconBtn base center"><FontAwesomeIcon icon={faArrowLeft} /></button>
+            }
+            <span className="base">{pathName !== "" ? (pathName.indexOf("verify") !== -1 ? "Verify" : pathName): "Home" }</span>
         </div>
     )
 });
