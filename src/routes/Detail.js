@@ -1,6 +1,7 @@
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisH, faRetweet, faUpload, } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Comments from "components/Detail/Comments";
 import { firebaseDB } from "fbase";
 import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
@@ -94,20 +95,7 @@ const Detail = withRouter(({match, userObj}) => {
         <div><FontAwesomeIcon icon={faUpload} size="2x" /></div>
       </div>
       {/* 댓글 */}
-      <div className="base nweet_comment">
-        <div className="new_comment base">
-          {creator && 
-          <div className="new_comment_profileImg">
-            <img src={creator.photoURL !== "" ? creator.photoURL : PImg} alt="profile_image" /> 
-          </div>}
-          <div className="new_comment_inputText">
-            <input type="text" placeholder="내 답글을 트윗합니다." />
-          </div>
-          <div className="new_comment_btn base">
-            <button>답글</button>
-          </div>
-        </div>
-      </div>
+      <Comments creator={creator} userObj={userObj} postId={postId} />
     </div>
   );
 });

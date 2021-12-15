@@ -20,7 +20,31 @@
   position: relative;
   z-index: 0;
 }
+.flexRow { flex-direction: row !important;}
 .mgr120 { margin-right: 120px !important;}
+.vCenter { align-items: center !important;}
+.mgBottom10 { margin-bottom: 10px !important;}
+.textBold { font-weight: bold;}
+.fontSize16{font-size: 16px;}
+.fontSize15{font-size: 15px;}
+.listView .leftProfile { flex-grow: 0; }
+.listView .leftProfile img {
+  position: relative;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+.listView .rightContent { flex-grow: 2; }
+.listView_container {
+  padding: 15px 0; 
+  min-height: 60px;
+  border-top: 1px solid rgb(47, 51, 54);
+}
+
+input[aria-disabled=true], button[aria-disabled=true]{
+  opacity: 0.5;
+}
 
 .center {
   justify-content: center;
@@ -256,10 +280,6 @@ header .header_content span {
   color: white;
 }
 
-.factoryInput__arrow[aria-disabled=true]{
-  opacity: 0.5;
-}
-
 .factoryInput_profile img{
     position: relative;
     border-radius: 50%;
@@ -357,12 +377,6 @@ header .header_content span {
 .nweet .nweet_content {
   display: flex;
   flex-grow: 2;
-}
-
-.nweet .nweet_content {
-  -webkit-box-direction: normal;
-  -webkit-box-orient: vertical;
-  flex-direction: column;
 }
 
 .nweet .nweet_profile_name_container {
@@ -728,9 +742,9 @@ time.fromNow {
   box-sizing: border-box;
   color: black;
 }
-.profile_edit_nav button.okBtn[aria-disabled=true]{
+/* .profile_edit_nav button.okBtn[aria-disabled=true]{
   opacity: 0.5;
-}
+} */
 
 .profile_edit_modal .img_preview{
   width: 500px;
