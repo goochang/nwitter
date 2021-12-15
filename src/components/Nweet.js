@@ -6,37 +6,24 @@ import { faTrash, faPencilAlt, faHeart as faHeart2} from "@fortawesome/free-soli
 import PImg from '../img/default_profile_normal.png';
 import Moment from 'react-moment';
 import { Link, useHistory } from "react-router-dom";
+import NweetFactory from "./NweetFactory";
 
 const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
     const [editing, setEditing] = useState(false);
-    const [newNweet, setNewNweet] = useState(nweetObj.text);
     const [creator, setCreator] = useState(null)
     const [isHeart, setIsHeart] = useState(false);
 
-    const history = useHistory();
-    
-    const onDeleteClick = async () =>{
+    const onDeleteClick = async (event) =>{
+        event.preventDefault();
         const ok = window.confirm("삭제 ㄱ?");
 
         if(ok) {
-            await dbService.doc(`nweets/${nweetObj.id}`).delete();
+            firebaseDB.ref(`/posts/${nweetObj.key}`).remove();
 
             if(nweetObj.attachmentUrl !== "") {
                 await storageService.refFromURL(nweetObj.attachmentUrl).delete();
             }
         }
-    }
-
-    const onChange = (event) =>{
-        const {target : {value}} = event;
-        setNewNweet(value);
-    }
-
-    const onSubmit = async (event) => {
-        event.preventDefault();
-
-        await dbService.doc(`nweets/${nweetObj.id}`).update({text: newNweet});
-        toggleEditing();
     }
 
     useEffect( () => {
@@ -66,10 +53,20 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
         }
     }, [nweetObj, userObj])
 
-    const toggleEditing = () => setEditing( (prev) => !prev);
+    const toggleEditing = (event) => {
+        if(event !== undefined){
+            event.preventDefault();
+            const {target:{parentNode}} = event;
+            const updateElement = document.getElementsByClassName('update');
+
+            if(updateElement.length !== 0 && parentNode.classList[2] !== "update"){
+                document.getElementsByClassName('cancelBtn')[0].click();
+            }
+        }
+        setEditing( (prev) => !prev)
+    };
     const heartClick = (event) => {
         event.preventDefault();
-        console.log("heartClick")
         firebaseDB.ref('hearts')
         .orderByChild('value')
         .equalTo(userObj.uid+nweetObj.key)
@@ -97,22 +94,15 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
 
     return (
         
-        <div className={`nweet`} ref={viewRef} >
+        <div className={`nweet ${editing ? 'update' : ''}`} ref={viewRef} >
             {editing ? (
                 <>
-                <form onSubmit={onSubmit} className="container nweetEdit">
-                    <input value={newNweet} onChange={onChange} required
-                    placeholder="Edit your nweet" autoFocus className="formInput" />
-                    <input type="submit" value="update" className="formBtn" />
-                </form>
-                <button onClick={toggleEditing} className="formBtn cancelBtn">
-                    Cancel
-                </button>
+                <NweetFactory userObj={userObj} isUpdate={true} updateCancel={toggleEditing}
+                nweetObj={nweetObj} toggleEditing={toggleEditing} />
                 </>
             ) :
             <Link to={`/nweet/${nweetObj.key}`}>
                 <div className="nweet_container base" >
-                    
                     <div className="nweet_profile base">
                         { creator && 
                         <Link to={`/search/${creator.uid}`}>
@@ -126,8 +116,19 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
                         <div className="nweet_profile_name_container base">
                             <Link to={`/search/${creator.uid}`} className="profile_displayName">{creator.displayName}</Link>
                             <Moment fromNow className="fromNow">{nweetObj.createdAt}</Moment>
+                            {
+                                isOwner && (
+                                    <div className="nweet__actions">
+                                        <span onClick={onDeleteClick}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </span>
+                                        <span onClick={toggleEditing}>
+                                            <FontAwesomeIcon icon={faPencilAlt} />
+                                        </span>
+                                    </div>
+                                )
+                            }
                         </div>}
-                        
                         <div className="nweet_content_box base">
                             <span>{nweetObj.text}</span>
                             {
@@ -145,25 +146,11 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
                                 <div>
                                     reply
                                 </div>
-                            </div>
-                            {
-                                isOwner && (
-                                    <div className="nweet__actions">
-                                        <span onClick={onDeleteClick}>
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </span>
-                                        <span onClick={toggleEditing}>
-                                            <FontAwesomeIcon icon={faPencilAlt} />
-                                        </span>
-                                    </div>
-                                )
-                            }
+                            </div>  
                         </div>
-                    </div>
-                    
+                    </div> 
                 </div>
-                </Link>
-                
+            </Link>
         }
         </div>
     )

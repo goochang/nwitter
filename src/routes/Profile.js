@@ -30,9 +30,7 @@ const Profile = ({userObj, refreshUser}) => {
     }, [getMyNweets]);
 
     useEffect( () => {
-        console.log(inView)
         if (inView && !loading) {
-            console.log("next")
             setPage(page => page + 1)
         }
     }, [inView, loading])
@@ -40,7 +38,7 @@ const Profile = ({userObj, refreshUser}) => {
     return (
         <div>
             <ProfileEdit userObj={userObj} />
-            <div>
+            <div className="base">
                 {
                     nweets && Object.keys(nweets).map((nweet) => {
                         return (<Nweet key={nweet} nweetObj={nweets[nweet]} userObj={userObj}

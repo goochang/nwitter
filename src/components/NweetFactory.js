@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
 
-const NweetFactory = ({userObj}) => {
-
-    const [nweet, setNweet] = useState("");
+const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}) => {
+    const [nweet, setNweet] = useState(nweetObj === undefined ? "" : nweetObj.text);
     const [attachment, setAttachment] = useState("");
 
     const onSubmit = async (event) => {
@@ -29,17 +28,28 @@ const NweetFactory = ({userObj}) => {
             const response = await attachmentRef.putString(_attachment, "data_url");
             attachmentUrl = await response.ref.getDownloadURL();
         }
+        if(attachmentUrl !== "" && nweetObj.attachmentUrl !== "") {
+            await storageService.refFromURL(nweetObj.attachmentUrl).delete();
+        }
 
-        const ref = firebaseDB.ref("/posts").push({
-            text:_nweet,
-            createdAt: Date.now(),
-            creatorId: userObj.uid,
-            creatorName: userObj.displayName,
-            creatorEmail: userObj.email,
-            attachmentUrl,
-            heartCnt: 0
-        });
+        if(!isUpdate){
+            firebaseDB.ref("/posts").push({
+                text:_nweet,
+                createdAt: Date.now(),
+                creatorId: userObj.uid,
+                creatorName: userObj.displayName,
+                creatorEmail: userObj.email,
+                attachmentUrl,
+                heartCnt: 0
+            });
+        } else {
+            firebaseDB.ref("/posts/"+ nweetObj.key).update({
+                text:_nweet,
+                attachmentUrl: (nweetObj && nweetObj.attachmentUrl && attachmentUrl === "" ? nweetObj.attachmentUrl : attachmentUrl)
+            });
 
+            toggleEditing();
+        }
     }
 
     const onChange = (event) => {
@@ -53,7 +63,6 @@ const NweetFactory = ({userObj}) => {
     const onFileChange = (event) => {
         const { target: {files}, } = event;
         const theFile = files[0];
-        //console.log(theFile);
         const reader = new FileReader();
         reader.onloadend = (finishedEvent) => {
             const { currentTarget : {result }, } = finishedEvent;
@@ -89,8 +98,11 @@ const NweetFactory = ({userObj}) => {
                         </div>
                     </div>
                     )}
-                <div className="factoryInput_button base">
-                    <input type="submit" value="Tweet" className="factoryInput__arrow" aria-disabled={nweet === ""} />
+                <div className={`factoryInput_button base ${isUpdate ? 'update' : ''}`}>
+                    <input type="submit" value={isUpdate ? 'Update' : 'Tweet'} className="factoryInput__arrow" aria-disabled={nweet === ""} />
+                    { isUpdate && 
+                    <input type="button" value="Cancel" className="cancelBtn factoryInput__arrow mgr120" onClick={updateCancel} />
+                    }
                     
                     <input id="attach-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />
                     <label htmlFor="attach-file" className="factoryInput__label">

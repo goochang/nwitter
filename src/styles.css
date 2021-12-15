@@ -20,6 +20,7 @@
   position: relative;
   z-index: 0;
 }
+.mgr120 { margin-right: 120px !important;}
 
 .center {
   justify-content: center;
@@ -203,7 +204,6 @@ header .header_content span {
   align-items: flex-start;
   width: 100%;
   min-height: 100px;
-  border-bottom: 1px solid rgb(47, 51, 54);
   box-sizing: border-box;
   padding: 15px 15px 0 15px;
 }
@@ -395,12 +395,15 @@ header .header_content span {
   /* left: 0px;
   top: 0px; */
   position: relative;
-  width:500px;
-  /* max-width: 500px; */
+  /* width:500px;
+  max-width: 500px;
   height: 100%;
-  margin-top: 10px;
+  margin-top: 10px; */
 }
-
+.nweet__actions svg{
+  width: 20px !important;
+  height: 20px !important;
+}
 .nweet__actions {
   position: absolute;
   right: 10px;
@@ -992,7 +995,12 @@ time.fromNow {
 }
 .nweet_content img {
   border-radius: 15px;
-  width: 100%;
+  position: relative;
+  width:500px;
+  max-width: 500px;
+  height: 100%;
+  margin-top: 10px; 
+  /* width: 100%; */
 }
 
 .nweet_content .content_timestamp {
@@ -1050,4 +1058,9 @@ time.fromNow {
   font-weight: 600;
   font-size: 15px;
   padding: 10px 15px;
+}
+
+/* update */
+.update .factoryInput_button {
+  padding-right: 100px;
 }

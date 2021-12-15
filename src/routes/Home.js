@@ -20,7 +20,6 @@ const Home = ({match, userObj}) => {
     .limitToLast(10 * page)
     .on('value', (snapshot) => {        
       setNweets(reverseObject(snapshot.val()));
-      // setNweets(snapshot.val());
     })
 
     setLoading(false);
@@ -33,7 +32,6 @@ const Home = ({match, userObj}) => {
   useEffect( () => {
     console.log(inView)
     if (inView && !loading) {
-      console.log("next")
       setPage(page => page + 1)
     }
   }, [inView, loading])
