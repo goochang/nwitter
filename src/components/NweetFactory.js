@@ -40,7 +40,9 @@ const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}
                 creatorName: userObj.displayName,
                 creatorEmail: userObj.email,
                 attachmentUrl,
-                heartCnt: 0
+                heartCnt: 0,
+                commentCnt: 0,
+                retweetCnt:0
             });
         } else {
             firebaseDB.ref("/posts/"+ nweetObj.key).update({

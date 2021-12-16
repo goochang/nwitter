@@ -1,8 +1,8 @@
 import { dbService, firebaseDB, storageService} from "fbase";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faTrash, faPencilAlt, faHeart as faHeart2} from "@fortawesome/free-solid-svg-icons";
+import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faTrash, faPencilAlt, faHeart as faHeart2, faUpload, faRetweet} from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
 import Moment from 'react-moment';
 import { Link, useHistory } from "react-router-dom";
@@ -25,33 +25,6 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
             }
         }
     }
-
-    useEffect( () => {
-        if(nweetObj){
-            firebaseDB.ref('users')
-            .orderByChild('uid')
-            .startAt(nweetObj.creatorId)
-            .endAt(nweetObj.creatorId+"\uf8ff")
-            .once('value', snapshot => {
-                const user = snapshot.val();
-                setCreator(user[Object.keys(user)[0]] );
-            });
-        }
-
-        if(userObj){
-            firebaseDB.ref('hearts')
-            .orderByChild('value')
-            .equalTo(userObj.uid+nweetObj.key)
-            .once('value', snapshot => {    
-                if(snapshot.exists()){
-                    const hearts = snapshot.val();
-                    Object.keys(hearts).forEach((heart) => {
-                        setIsHeart(hearts[heart].isHeart)
-                    })
-                }
-            });
-        }
-    }, [nweetObj, userObj])
 
     const toggleEditing = (event) => {
         if(event !== undefined){
@@ -91,6 +64,35 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
             setIsHeart(!isHeart)
         });        
     }
+
+    useEffect( () => {
+        if(nweetObj){
+            firebaseDB.ref('users')
+            .orderByChild('uid')
+            .startAt(nweetObj.creatorId)
+            .endAt(nweetObj.creatorId+"\uf8ff")
+            .once('value', snapshot => {
+                const user = snapshot.val();
+                setCreator(user[Object.keys(user)[0]] );
+            });
+        }
+    }, [nweetObj])
+
+    useEffect( () => {
+        if(userObj && nweetObj){
+            firebaseDB.ref('hearts')
+            .orderByChild('value')
+            .equalTo(userObj.uid+nweetObj.key)
+            .once('value', snapshot => {    
+                if(snapshot.exists()){
+                    const hearts = snapshot.val();
+                    Object.keys(hearts).forEach((heart) => {
+                        setIsHeart(hearts[heart].isHeart)
+                    })
+                }
+            });
+        }
+    }, [nweetObj, userObj])
 
     return (
         
@@ -143,11 +145,26 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
                                     </button>
                                     <label htmlFor="nweet_heart">{nweetObj.heartCnt}</label>
                                 </div>
-                                <div>
-                                    reply
+                                <div className="base">
+                                    <button className="iconBtn" id="nweet_comment">
+                                        <FontAwesomeIcon icon={faComment} />
+                                    </button>
+                                    <label htmlFor="nweet_comment">{nweetObj.commentCnt}</label>
+                                </div>
+                                <div className="base">
+                                    <button className="iconBtn" id="nweet_retweet">
+                                        <FontAwesomeIcon icon={faRetweet} />
+                                    </button>
+                                    <label htmlFor="nweet_retweet">{nweetObj.retweetCnt}</label>
+                                </div>
+                                <div className="base">
+                                    <button className="iconBtn" id="nweet_upload">
+                                        <FontAwesomeIcon icon={faUpload} />
+                                    </button>
                                 </div>
                             </div>  
                         </div>
+                        
                     </div> 
                 </div>
             </Link>

@@ -443,16 +443,18 @@ header .header_content span {
 .nweet_btn_wrap {
   margin-top: 5px;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .nweet_btn_wrap div{
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 5px 0;
-  margin-right: 50px;
   color: rgb(110, 118, 125);
   flex-direction: row;
   cursor: pointer;
+  flex-grow: 1;
 }
 .nweet_btn_wrap button{
   background-color: black;
@@ -998,7 +1000,7 @@ time.fromNow {
   flex-grow: 1;
 }
 
-.bbg {
+.nweet_detail .bbg {
   border-bottom: 1px solid rgb(47, 51, 54);
 }
 .nweet_content span.content_text {
@@ -1047,9 +1049,11 @@ time.fromNow {
 .nweet_btn svg {
   color: rgb(110, 118, 125)
 }
-.nweet_btn div {
+.nweet_detail .nweet_btn div {
   padding: 0 50px;
+  width: auto;
 }
+
 .new_comment{
   margin: 15px 0;
   flex-direction: row;
@@ -1072,6 +1076,12 @@ time.fromNow {
   font-weight: 600;
   font-size: 15px;
   padding: 10px 15px;
+}
+span.noComment {
+  text-align: center;
+  padding: 15px;
+  border-top: 1px solid rgb(47, 51, 54);
+  font-size: 20px;
 }
 
 /* update */

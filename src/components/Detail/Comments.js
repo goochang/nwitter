@@ -17,6 +17,10 @@ const Comments = ({creator, userObj, postId}) => {
             creatorName: userObj.displayName,
             creatorEmail: userObj.email,
         });
+        const commentCnt = comments === null ? 1 : Object.keys(comments).length+1;
+        firebaseDB.ref("posts/"+ postId).update({
+            commentCnt: commentCnt
+        });
 
         setText("");
     }
@@ -61,10 +65,11 @@ const Comments = ({creator, userObj, postId}) => {
                 comments ?
                 Object.keys(comments).map((comment) => {
                     return (
-                    <Comment commentObj={comments[comment]} />
+                    <Comment commentId={comment} commentObj={comments[comment]} 
+                    isOwner={comments[comment].creatorId === userObj.uid } />
                     )
                 })
-                : <span>댓글이 없습니다</span>
+                : <span className='noComment'>댓글이 없습니다</span>
                 }
 
             </div>

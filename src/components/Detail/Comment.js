@@ -1,10 +1,12 @@
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { firebaseDB } from 'fbase';
 import { useCallback, useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import PImg from '../../img/default_profile_normal.png';
 
-const Comment = ({commentObj}) => {
+const Comment = ({commentId, commentObj, isOwner}) => {
     const creatorId = commentObj === undefined ? "" : commentObj.creatorId;
     const [creator, setCreator] = useState(null);
 
@@ -19,6 +21,15 @@ const Comment = ({commentObj}) => {
             });
         }
     },[creatorId]);
+
+    const onDeleteClick = async (event) =>{
+        event.preventDefault();
+        const ok = window.confirm("댓글을 삭제하시겠습니까");
+
+        if(ok) {
+            firebaseDB.ref(`/comments/${commentId}`).remove();
+        }
+    }
 
     useEffect(()=>{
         getCreator()
@@ -37,14 +48,23 @@ const Comment = ({commentObj}) => {
                     </div>
                     <div className="base rightContent">
                         { creator && 
-                        <div className="vCenter mgBottom10 flexRow base">
+                        <div className="mgBottom10 flexRow base">
                             <Link to={`/search/${creator.uid}`} className="fontSize16 textBold">{creator.displayName}</Link>
                             <Moment fromNow className="fromNow">{commentObj.createdAt}</Moment>
                         </div>}
                         <div className="base contentText">
                             <span className='fontSize15'>{commentObj.text}</span>
                         </div>
+                        { isOwner && (
+                                <div className="nweet__actions">
+                                    <span onClick={onDeleteClick}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </span>
+                                </div>
+                            )
+                        }
                     </div>
+                    
                 </div>
                 )} 
         </div>

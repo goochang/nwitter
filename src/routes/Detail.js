@@ -1,5 +1,5 @@
 import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faEllipsisH, faRetweet, faUpload, } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faHeart as faHeart2, faUpload, faRetweet} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Comments from "components/Detail/Comments";
 import { firebaseDB } from "fbase";
@@ -11,6 +11,8 @@ import PImg from '../img/default_profile_normal.png';
 const Detail = withRouter(({match, userObj}) => {
   const [nweet, setNweet] = useState(null);
   const [creator, setCreator] = useState(null);
+  const [isHeart, setIsHeart] = useState(false);
+
   const postId = match.params.key1;
 
   const getNweet = useCallback(async () => {
@@ -32,6 +34,49 @@ const Detail = withRouter(({match, userObj}) => {
       });
     }
   }, [nweet]);
+
+  const heartClick = (event) => {
+    event.preventDefault();
+    firebaseDB.ref('hearts')
+    .orderByChild('value')
+    .equalTo(userObj.uid+postId)
+    .once('value', snapshot => {
+        if(snapshot.exists()){ // 이미 누른적 있는경우
+            const hearts = snapshot.val();
+            Object.keys(hearts).forEach((heart) => {
+                firebaseDB.ref('hearts/' + heart).update({
+                    isHeart: !hearts[heart].isHeart
+                })
+            })                
+        } else {
+            firebaseDB.ref('hearts').push({
+                value:userObj.uid + postId,
+                isHeart: true
+            });
+        }
+        const _heartCnt = isHeart ? nweet.heartCnt - 1 : nweet.heartCnt + 1;
+        firebaseDB.ref('posts/' + postId).update({
+            heartCnt: _heartCnt
+        })
+        setIsHeart(!isHeart)
+    });        
+}
+
+  useEffect( () => {
+    if(userObj){
+      firebaseDB.ref('hearts')
+      .orderByChild('value')
+      .equalTo(userObj.uid+postId)
+      .once('value', snapshot => {    
+          if(snapshot.exists()){
+              const hearts = snapshot.val();
+              Object.keys(hearts).forEach((heart) => {
+                  setIsHeart(hearts[heart].isHeart)
+              })
+          }
+      });
+    }
+  }, [userObj, postId])
 
   useEffect(()=> {
     getNweet();
@@ -88,12 +133,32 @@ const Detail = withRouter(({match, userObj}) => {
         </div>}
       </div>
       {/* 상호작용 버튼 */}
-      <div className="base nweet_btn bbg">
-        <div><FontAwesomeIcon icon={faComment} size="2x" /></div>
-        <div><FontAwesomeIcon icon={faRetweet} size="2x" /></div>
-        <div><FontAwesomeIcon icon={faHeart} size="2x" /></div>
-        <div><FontAwesomeIcon icon={faUpload} size="2x" /></div>
-      </div>
+      {nweet &&
+      <div className="nweet_btn_wrap base bbg">
+        <div className={`base heart${isHeart ? " active" : ""}`} onClick={heartClick}>
+            <button className="iconBtn" id="nweet_heart">
+                { isHeart ? <FontAwesomeIcon icon={faHeart2} /> : <FontAwesomeIcon icon={faHeart} /> }
+            </button>
+            <label htmlFor="nweet_heart">{nweet.heartCnt}</label>
+        </div>
+        <div className="base">
+            <button className="iconBtn" id="nweet_comment">
+                <FontAwesomeIcon icon={faComment} />
+            </button>
+            <label htmlFor="nweet_comment">{nweet.commentCnt}</label>
+        </div>
+        <div className="base">
+            <button className="iconBtn" id="nweet_retweet">
+                <FontAwesomeIcon icon={faRetweet} />
+            </button>
+            <label htmlFor="nweet_retweet">{nweet.retweetCnt}</label>
+        </div>
+        <div className="base">
+            <button className="iconBtn" id="nweet_upload">
+                <FontAwesomeIcon icon={faUpload} />
+            </button>
+        </div>
+      </div>  }
       {/* 댓글 */}
       <Comments creator={creator} userObj={userObj} postId={postId} />
     </div>

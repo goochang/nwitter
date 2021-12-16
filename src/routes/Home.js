@@ -50,10 +50,6 @@ const Home = ({match, userObj}) => {
           })
           : <span>글이 없습니다</span>
         }
-
-        {
-          inView ? "로딩중 ": "맨끝임"
-        }
       </div>
     </div>
   );
