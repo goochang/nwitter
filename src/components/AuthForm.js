@@ -40,11 +40,12 @@ const AuthForm = ({refreshUser}) => {
                             refreshUser();
                             firebaseDB.ref('users').push({
                                 uid:user.uid,
+                                timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
                                 displayName: user.displayName ? user.displayName : user.email,
                                 email: user.email ? user.email : "",
                                 photoURL: user.photoURL ? user.photoURL : "",
                                 coverURL: "",
-                                timestamp : user.metadata.creationTime ? user.metadata.creationTime : "",
+                                
                             });
                         }
                     });

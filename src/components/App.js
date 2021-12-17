@@ -20,6 +20,8 @@ function App() {
       photoURL: user.photoURL !== null ? user.photoURL  : PImg,
       coverURL: (user.coverURL !== "" || user.coverURL !== undefined) ? user.coverURL  : "",
       timestamp: user.timestamp,
+      followCnt: user.followCnt,
+      followingCnt: user.followingCnt,
       updateProfile: (args) => _user.updateProfile(args)
     });
   }

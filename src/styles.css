@@ -851,7 +851,24 @@ time.fromNow {
   width: 350px;
   margin-left: 15px;
 }
-
+/* search */
+.followBtn {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 600;
+  border: none;
+  user-select: none;
+}
+.followBtn.active {
+  background-color: black;
+  color:white;
+  border: 1px solid white;
+}
 .search_container {
   min-height: 32px;
   height: 53px;

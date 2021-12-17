@@ -80,10 +80,7 @@ const Side = ({refreshUser}) => {
                         <form onSubmit={onSubmit}>
                             <input type="text" value={searchValue} onChange={onChange} className="searchInput" 
                             placeholder="Search Nwitter" autoComplete="off" id="sInput"
-                            onFocus={()=> {setIsFocus(true)}} onBlur={()=> {
-                                setIsFocus(false)
-                                console.log("blur")
-                                }} />
+                            onFocus={()=> {setIsFocus(true)}} onBlur={()=> {setIsFocus(false)}} />
                         </form>
                     </div>
                 </label>

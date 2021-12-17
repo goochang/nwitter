@@ -10,6 +10,8 @@ const ProfileEdit = ({userObj}) => {
     const displayName = userObj !== null ? userObj.displayName : "";
     const photoURL = userObj !== null ? userObj.photoURL : "";
     const coverURL = userObj !== null ? userObj.coverURL : "";
+    const followCnt = userObj !== null ? userObj.followCnt : "";
+    const followingCnt = userObj !== null ? userObj.followingCnt : "";
 
     const [profileImg, setProfileImg] = useState("");
     const [coverImg, setCoverImg] = useState("");
@@ -64,12 +66,12 @@ const ProfileEdit = ({userObj}) => {
                         alt="profile_image" /> 
                     <span className="profile_name">{displayName}</span>
                     <span className="user_id">{email}</span>
-                    <span className="join_date">Joined {moment(timestamp).format('ll')}</span>
+                    <span className="join_date">가입일 {moment(timestamp).format('ll')}</span>
                     <div className="follow_wrap">
-                        <span className="f_cnt">10</span>
-                        <span className="f_text">Following</span>
-                        <span className="f_cnt">0</span>
-                        <span className="f_text">Followers</span>
+                        <span className="f_cnt">{followCnt}</span>
+                        <span className="f_text">팔로우 중</span>
+                        <span className="f_cnt">{followingCnt}</span>
+                        <span className="f_text">팔로워</span>
                     </div>
                 </div>
 

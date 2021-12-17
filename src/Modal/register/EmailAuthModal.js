@@ -41,6 +41,8 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
                     introduce: introduce ? introduce : "",
                     photoURL: downURL ? downURL : "",
                     coverURL: "",
+                    followCnt: 0,
+                    followingCnt: 0
                 }).then(function(){
                     refreshUser();
                     sendEmail();

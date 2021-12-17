@@ -49,6 +49,8 @@ function Auth({userObj, refreshUser}) {
                             introduce: "",
                             photoURL: user.photoURL ? user.photoURL : "",
                             coverURL: "",
+                            followCnt: 0,
+                            followingCnt: 0
                         });
                     }
                 });
