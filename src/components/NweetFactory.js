@@ -11,7 +11,7 @@ const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        if(nweet === "") {
+        if(nweet === "" || !userObj) {
             return;
         }
         const _nweet = nweet;
@@ -101,7 +101,7 @@ const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}
                     </div>
                     )}
                 <div className={`factoryInput_button base ${isUpdate ? 'update' : ''}`}>
-                    <input type="submit" value={isUpdate ? 'Update' : 'Tweet'} className="factoryInput__arrow" aria-disabled={nweet === ""} />
+                    <input type="submit" value={isUpdate ? 'Update' : 'Tweet'} className="factoryInput__arrow" aria-disabled={nweet === "" || !userObj} />
                     { isUpdate && 
                     <input type="button" value="Cancel" className="cancelBtn factoryInput__arrow mgr120" onClick={updateCancel} />
                     }

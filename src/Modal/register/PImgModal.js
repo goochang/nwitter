@@ -26,6 +26,7 @@ const PImgModal = ({setModalContent, onRequestClose, refreshUser, email, name, n
                 <PImgEditModal
                     setModalContent={setModalContent}
                     onRequestClose={onRequestClose}
+                    refreshUser={refreshUser}
                     email={email}
                     name={name}
                     nickname={nickname}

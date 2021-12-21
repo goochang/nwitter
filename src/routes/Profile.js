@@ -28,6 +28,9 @@ const Profile = ({userObj, refreshUser}) => {
     useEffect(()=> {
         getMyNweets();
     }, [getMyNweets]);
+    useEffect(()=> {
+        refreshUser();
+    }, [refreshUser]);
 
     useEffect( () => {
         if (inView && !loading) {

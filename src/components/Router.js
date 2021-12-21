@@ -8,6 +8,7 @@ import Verify from 'routes/Verify';
 import LeftMenu from './LeftMenu';
 import Navigation from './Navigation';
 import Side from './Side';
+import Follow from 'routes/Follow';
 
 const AppRouter = ({match, userObj, refreshUser, setUserObj, logout}) => {
     return (
@@ -21,8 +22,10 @@ const AppRouter = ({match, userObj, refreshUser, setUserObj, logout}) => {
                             <Navigation />
                             <Route exact path="/" 
                             render={()=> <Home userObj={userObj} /> }/>
+                            <Route exact path="/follow" 
+                            render={()=> <Follow userObj={userObj} /> }/>
                             <Route path="/search/:key1" 
-                            render={() => <Search userObj={userObj} />  } />
+                            render={() => <Search userObj={userObj} refreshUser={refreshUser} />  } />
                             <Route path="/nweet/:key1" 
                             render={() => <Detail userObj={userObj} />  } />
                             <Route path="/profile" 

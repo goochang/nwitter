@@ -5,7 +5,7 @@ import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faTrash, faPencilAlt, faHeart as faHeart2, faUpload, faRetweet} from "@fortawesome/free-solid-svg-icons";
 import PImg from '../img/default_profile_normal.png';
 import Moment from 'react-moment';
-import { Link, useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import NweetFactory from "./NweetFactory";
 
 const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
@@ -103,7 +103,7 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
                 nweetObj={nweetObj} toggleEditing={toggleEditing} />
                 </>
             ) :
-            <Link to={`/nweet/${nweetObj.key}`}>
+            <NavLink to={`/nweet/${nweetObj.key}`}>
                 <div className="nweet_container base" >
                     <div className="nweet_profile base">
                         { creator && 
@@ -167,7 +167,7 @@ const Nweet = ({nweet_key, nweetObj, isOwner, userObj, viewRef }) => {
                         
                     </div> 
                 </div>
-            </Link>
+            </NavLink>
         }
         </div>
     )

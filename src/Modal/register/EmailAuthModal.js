@@ -90,11 +90,11 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
         }
     },[pImg, uploadToStorage]);
 
-    const EmailRegister = useCallback(async user =>  {
-        await authService.createUserWithEmailAndPassword(user.email, user.password).then(async function(){
+    const EmailRegister = useCallback(async () =>  {
+        await authService.createUserWithEmailAndPassword(email, password).then(async function(){
             await profileUpdate();
         });
-    }, [profileUpdate]);
+    }, [profileUpdate, email, password]);
 
     useEffect(()=> {
         // usecallback 다수추가해서 테스트필요

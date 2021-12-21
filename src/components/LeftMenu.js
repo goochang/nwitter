@@ -32,11 +32,11 @@ const LeftMenu = ({userObj, logout}) => {
                             </div>
                         </Link>
                         )}
-                        <Link to="/explore">
+                        <Link to="/follow">
                             <div className="header_content">
                             <FontAwesomeIcon icon={faHashtag} color={"rgb(217, 217, 217)"} size="2x" />
                             <span style={{marginTop: 10}}>
-                            Explore
+                            Follow
                             </span>
                             </div>
                         </Link>

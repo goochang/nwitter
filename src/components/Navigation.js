@@ -34,7 +34,7 @@ const Navigation = withRouter(({match, location}) => {
 
     return (
         <div className="main_nav base">
-            { (url && url[4] === "nweet") &&
+            { (url && (url[4] === "nweet" || url[4] === "search" )) &&
             <button onClick={()=>{history.goBack()}} className="iconBtn base center"><FontAwesomeIcon icon={faArrowLeft} /></button>
             }
             <span className="base">{pathName !== "" ? (pathName.indexOf("verify") !== -1 ? "Verify" : pathName): "Home" }</span>

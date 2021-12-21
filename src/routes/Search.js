@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { withRouter } from "react-router-dom";
 
-const Search = withRouter(({match, userObj}) => {
+const Search = withRouter(({match, userObj, refreshUser}) => {
   const [nweets, setNweets] = useState([]);
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -38,8 +38,6 @@ const Search = withRouter(({match, userObj}) => {
 
   const followClick = (event) => {
     event.preventDefault();
-    console.log(userObj)
-    console.log(user)
     firebaseDB.ref('follows')
     .orderByChild('value')
     .equalTo(userObj.uid+uid)
@@ -54,12 +52,16 @@ const Search = withRouter(({match, userObj}) => {
         } else {
             firebaseDB.ref('follows').push({
                 value: userObj.uid + uid,
-                isFollow: true
+                isFollow: true,
+                from:userObj.uid,
+                to:uid
             });
         }
-        console.log(isFollow)
         const _followCnt = loginfollowCnt + (snapshot.exists() && isFollow ? -1 : 1)
         const _followingCnt = followingCnt + (snapshot.exists() && isFollow ? -1 : 1)
+
+        console.log(loginfollowCnt)
+        console.log(_followCnt)
         firebaseDB.ref('users/' + userObj.userId).update({
             followCnt: _followCnt
         })
@@ -69,8 +71,30 @@ const Search = withRouter(({match, userObj}) => {
         setfollowingCnt(_followingCnt)
         setLoginfollowCnt(_followCnt)
         setIsFollow(!isFollow)
+
+        refreshUser();
     });  
   }
+
+  const getFollow = useCallback(() => {
+    if(userObj !== null && uid){  
+      firebaseDB.ref('follows')
+      .orderByChild('value')
+      .equalTo(userObj.uid+uid)
+      .once('value', snapshot => {
+          if(snapshot.exists()){ // 이미 누른적 있는경우
+              const follows = snapshot.val();
+              Object.keys(follows).forEach((follow) => {
+                setIsFollow(follows[follow].isFollow)
+              })                
+          }        
+      });  
+    }
+  }, [uid, userObj]);
+
+  useEffect(() => {
+    getFollow();
+  }, [getFollow]);
 
   useEffect(() => {
     getNweets();
@@ -82,7 +106,6 @@ const Search = withRouter(({match, userObj}) => {
     }
   }, [inView, loading])
   useEffect(()=>{
-    console.log("user")
     if(userObj !== null){
       setLoginfollowCnt(userObj.followCnt);
     }
@@ -92,14 +115,15 @@ const Search = withRouter(({match, userObj}) => {
     const userRef = firebaseDB.ref('users');
     userRef
     .orderByChild('uid')
-    .startAt(uid)
-    .endAt(uid+"\uf8ff")
+    .equalTo(uid)
     .once('value')
     .then(c => {
       const user = c.val()        
       const userId = Object.keys(user)[0];
+      console.log(user[userId])
       setUserId(userId);
       setUser(user[userId] );
+
       setfollowCnt(user[userId].followCnt)
       setfollowingCnt(user[userId].followingCnt)
     });       
