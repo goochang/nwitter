@@ -492,6 +492,12 @@ time.fromNow {
   align-items: center;
 }
 
+.authContainer .container {
+    padding: 0 50px;
+    border-bottom: none;
+    border-top: none;
+}
+
 .authBtns {
   display: flex;
   justify-content: space-between;
@@ -514,7 +520,7 @@ time.fromNow {
 /* AuthForm */
 
 .authInput {
-  max-width: 320px;
+  /* max-width: 320px; */
   width: 100%;
   padding: 10px;
   border-radius: 30px;
@@ -528,7 +534,9 @@ time.fromNow {
   text-align: center;
   background: #04aaff;
   color: white;
-  margin-top: 10;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 25px;
   cursor: pointer;
 }
 
@@ -542,13 +550,12 @@ time.fromNow {
 .authSwitch {
   color: #04aaff;
   cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 40px;
   display: block;
-  font-size: 12px;
+  font-size: 15px;
   text-decoration: underline;
 }
-
 
 /* Profile */
 .profileEdit_container {
