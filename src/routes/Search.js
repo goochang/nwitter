@@ -5,6 +5,7 @@ import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { withRouter } from "react-router-dom";
+import PImg from '../img/default_profile_normal.png';
 
 const Search = withRouter(({match, userObj, refreshUser}) => {
   const [nweets, setNweets] = useState([]);
@@ -139,8 +140,8 @@ const Search = withRouter(({match, userObj, refreshUser}) => {
             }
         </div>
         <div className="profile_container base">
-            <img src={user.photoURL} 
-                alt="profile_image" /> 
+        <img src={user.photoURL !== "" ? user.photoURL : PImg } 
+                        alt="profile_image" /> 
             <span className="profile_name">{user.displayName}</span>
             <span className="user_id">{user.email}</span>
             <span className="join_date">가입일 {moment(user.timestamp).format('ll')}</span>

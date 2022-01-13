@@ -116,6 +116,7 @@ const Side = ({refreshUser}) => {
             </div>
 
             { !isLogin && (
+                <>
                 <div className="goRegister base">
                     <div className="t1">
                         <span>트위터에 처음이세요?</span>
@@ -127,6 +128,13 @@ const Side = ({refreshUser}) => {
                         <button onClick={openModal}>가입하기</button>
                     </div>
                 </div>
+                <div className="goRegister base">
+                    <div className="t2">
+                        <p>github.io에 구글로그인 연결관련해서 회원가입에 문제가 있습니다..</p>
+                        <p>test@test.com / test123으로 로그인해서 테스트부탁드립니다</p>
+                    </div>
+                </div>
+                </>
             )}
 
             <ReactModal 

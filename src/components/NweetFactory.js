@@ -28,7 +28,8 @@ const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}
             const response = await attachmentRef.putString(_attachment, "data_url");
             attachmentUrl = await response.ref.getDownloadURL();
         }
-        if(attachmentUrl !== "" && nweetObj.attachmentUrl !== "") {
+        console.log(nweetObj)
+        if(nweetObj && attachmentUrl !== "" && nweetObj.attachmentUrl !== "") {
             await storageService.refFromURL(nweetObj.attachmentUrl).delete();
         }
 
@@ -78,7 +79,7 @@ const NweetFactory = ({userObj, isUpdate, updateCancel, nweetObj, toggleEditing}
     return (
         <form onSubmit={onSubmit} className="factoryForm base">
             <div className="factoryInput_profile base">
-                <img src={userObj ? userObj.photoURL : PImg} alt="profile_image" /> 
+                <img src={userObj && userObj.photoURL !== "" ? userObj.photoURL : PImg} alt="profile_image" /> 
             </div>
             <div className="factoryInput__container base">
                 <div className="factoryInput_text">

@@ -62,21 +62,19 @@ const PImgModal = ({setModalContent, onRequestClose, refreshUser, email, name, n
         )
     }
     const goNext = () => {
-        if(isValidation()){
-            setModalContent(
-                <IntroduceModal 
-                setModalContent={setModalContent}
-                onRequestClose={onRequestClose}
-                refreshUser={refreshUser}
-                name={name}
-                nickname={nickname}
-                email={email}
-                password={password}
-                pImg={_pImg}
-                _introduce={introduce}
-                />
-            )
-        }
+        setModalContent(
+            <IntroduceModal 
+            setModalContent={setModalContent}
+            onRequestClose={onRequestClose}
+            refreshUser={refreshUser}
+            name={name}
+            nickname={nickname}
+            email={email}
+            password={password}
+            pImg={_pImg}
+            _introduce={introduce}
+            />
+        )
     }
     return (
         <div className="register_modal pImgModal rBase">
@@ -104,7 +102,8 @@ const PImgModal = ({setModalContent, onRequestClose, refreshUser, email, name, n
                 </label>
             </div>
 
-            <div className={`rBase next_container${isValidation() ? " active" : ""} `}>
+            {/* <div className={`rBase next_container${isValidation() ? " active" : ""} `}> */}
+            <div className={`rBase`}>
                 <button className="nextBtn" onClick={() => {goNext()} }>다음</button>
             </div>
             <input id="profile-file" type="file" accept="image/*"  onChange={onFileChange} style={{opacity:0}} />

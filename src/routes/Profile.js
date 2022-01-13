@@ -4,13 +4,15 @@ import { dbService, firebaseDB } from "fbase";
 import { reverseObject } from "helpers/help";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 const Profile = ({userObj, refreshUser}) => {
     const [nweets, setNweets] = useState([]);
     const [ref, inView] = useInView()
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false)
+
+    const history = useHistory();
 
     const getMyNweets = useCallback(async () => {
         if(userObj) {
@@ -26,11 +28,21 @@ const Profile = ({userObj, refreshUser}) => {
     }, [userObj,page]);
 
     useEffect(()=> {
+        // console.log(userObj)
+        if(!userObj){
+            console.log("유저정보없음")
+            history.goBack()
+        }
+    }, [userObj, history])
+
+    useEffect(()=> {
         getMyNweets();
     }, [getMyNweets]);
     useEffect(()=> {
-        refreshUser();
-    }, [refreshUser]);
+        if(userObj){
+            refreshUser();
+        }
+    }, [refreshUser, userObj]);
 
     useEffect( () => {
         if (inView && !loading) {

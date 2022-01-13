@@ -85,7 +85,6 @@ const Detail = withRouter(({match, userObj}) => {
   useEffect(()=> {
     getCreator();
   }, [getCreator]);
-
   return (
     <div className="base nweet_detail">
       {/* 작성자 르포필 */}

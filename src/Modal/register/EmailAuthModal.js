@@ -52,19 +52,22 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
     }, [name, nickname, introduce, email, refreshUser]);
 
     const uploadToStorage = useCallback(async (user, ref) => {
-        await getFileBlob(pImg, ref, blob =>{
-            ref.put(blob).then(async function(snapshot) {
-               const downURL = await snapshot.ref.getDownloadURL();
-     
-                console.log("profile")
-                await user.updateProfile({
-                    photoURL: downURL
-                }).then(function(){
-                    addUser(user, downURL)
+        if(pImg === undefined){
+            addUser(user)
+        } else {
+            await getFileBlob(pImg, ref, blob =>{
+                ref.put(blob).then(async function(snapshot) {
+                    const downURL = await snapshot.ref.getDownloadURL();
+         
+                    await user.updateProfile({
+                        photoURL: downURL
+                    }).then(function(){
+                        addUser(user, downURL)
+                    });
+        
                 });
-    
-            });
-        })
+            })
+        }        
     }, [addUser, pImg]);
     
     const getFileBlob = function (url,ref, cb) {
@@ -80,7 +83,8 @@ const EmailAuthModal = ({setModalContent, onRequestClose, refreshUser, email, na
 
     const profileUpdate = useCallback(async () => {
         const user = authService.currentUser;
-    
+
+        console.log(pImg)
         if(pImg !== ""){
             const attachmentRef =  storageService
             .ref();

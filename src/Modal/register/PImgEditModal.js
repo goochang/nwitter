@@ -7,7 +7,7 @@ import RegisterModal from "./RegisterModal";
 import ReactCrop from "react-image-crop";
 import PImgModal from "./PImgModal";
 
-const PImgEditModal = ({setModalContent, onRequestClose, email, name, nickname, password, _pImg}) => {
+const PImgEditModal = ({setModalContent, onRequestClose, email, name, nickname, password, _pImg, refreshUser}) => {
     const [fileUrl, setFileUrl] = useState("");
     const [crop, setCrop] = useState({
         unit: "px",
@@ -119,6 +119,7 @@ const PImgEditModal = ({setModalContent, onRequestClose, email, name, nickname, 
             email={email}
             password={password}
             pImg={_pImg}
+            refreshUser={refreshUser}
             />
         );
     }
@@ -133,6 +134,7 @@ const PImgEditModal = ({setModalContent, onRequestClose, email, name, nickname, 
                 email={email}
                 password={password}
                 pImg={fileUrl}
+                refreshUser={refreshUser}
                 />
             )
         } else {

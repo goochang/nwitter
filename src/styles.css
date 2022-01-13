@@ -22,8 +22,11 @@
 }
 .flexRow { flex-direction: row !important;}
 .mgr120 { margin-right: 120px !important;}
+/* 위아래마진 */
+.tbm10 { margin: 10px 0;} 
 .vCenter { align-items: center !important;}
 .mgBottom10 { margin-bottom: 10px !important;}
+.mgBottom20 { margin-bottom: 20px !important;}
 .textBold { font-weight: bold;}
 .fontSize16{font-size: 16px;}
 .fontSize15{font-size: 15px;}
@@ -837,7 +840,7 @@ time.fromNow {
 }
 
 .img_preview canvas{
-  /* display: none; */
+  display: none;
   position: absolute;
   top: 0;
   right: -600px;

@@ -3,6 +3,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
+import PImg from '../img/default_profile_normal.png';
 
 const ProfileEdit = ({userObj}) => {
     const timestamp = userObj !== null ? userObj.timestamp : "";
@@ -12,6 +13,7 @@ const ProfileEdit = ({userObj}) => {
     const coverURL = userObj !== null ? userObj.coverURL : "";
     const followCnt = userObj !== null ? userObj.followCnt : "";
     const followingCnt = userObj !== null ? userObj.followingCnt : "";
+    const introduce = userObj !== null ? userObj.introduce : "";
 
     const [profileImg, setProfileImg] = useState("");
     const [coverImg, setCoverImg] = useState("");
@@ -35,7 +37,8 @@ const ProfileEdit = ({userObj}) => {
         );
     }
 
-    const openModal = () => {
+    const openModal = (e) => {
+        e.preventDefault();
         console.log(isModal)
         if(!isModal)
             setProfileModal(profileImg)
@@ -62,10 +65,11 @@ const ProfileEdit = ({userObj}) => {
                     <form>
                         <button className="edit_profile" onClick={openModal}>Set up profile</button>
                     </form>
-                    <img src={photoURL} 
+                    <img src={photoURL !== "" ? photoURL : PImg } 
                         alt="profile_image" /> 
                     <span className="profile_name">{displayName}</span>
                     <span className="user_id">{email}</span>
+                    <span className="tbm10 introduce">{introduce}</span>
                     <span className="join_date">가입일 {moment(timestamp).format('ll')}</span>
                     <div className="follow_wrap">
                         <span className="f_cnt">{followCnt}</span>
