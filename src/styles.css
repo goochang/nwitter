@@ -922,6 +922,7 @@ time.fromNow {
   border-radius: 8px;
   display: none;
   background-color: black;
+  z-index: 10;
 }
 
 .searchResult img {
